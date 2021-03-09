@@ -8,7 +8,7 @@
           <div class="col-3 offset-5 col-title">
             <input
               class="form-control header"
-              v-model="company.companyName"
+              v-model.trim="company.companyName"
               placeholder="Nazwa firmy"
             />
           </div>
@@ -19,7 +19,7 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model="company.nip"
+            v-model.trim="company.nip"
             placeholder="NIP"
           />
         </div>
@@ -29,7 +29,7 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model="company.regon"
+            v-model.trim="company.regon"
             placeholder="REGON"
           />
         </div>
@@ -39,7 +39,7 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model="company.email"
+            v-model.trim="company.email"
             placeholder="Email"
           />
         </div>
@@ -49,22 +49,22 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model="company.address.street"
+            v-model.trim="company.address.street"
             placeholder="Nazwa ulicy"
           />
           <input
             class="form-control form-control-sm"
-            v-model="company.address.houseNumber"
+            v-model.trim="company.address.houseNumber"
             placeholder="Numer budynku"
           />
           <input
             class="form-control form-control-sm"
-            v-model="company.address.postalCode"
+            v-model.trim="company.address.postalCode"
             placeholder="Kod pocztowy"
           />
           <input 
           class="form-control form-control-sm" 
-          v-model="company.address.city"
+          v-model.trim="company.address.city"
           placeholder="Miasto" />
         </div>
       </div>
@@ -87,12 +87,12 @@
             <input
               class="form-control form-control-sm"
               placeholder="Rodzaj"
-              v-model="company.phoneNumbers[index - 1].type"
+              v-model.trim="company.phoneNumbers[index - 1].type"
             />
             <input
               class="form-control form-control-sm"
               placeholder="Numer telefonu"
-              v-model="company.phoneNumbers[index - 1].number"
+              v-model.trim="company.phoneNumbers[index - 1].number"
             />
           </p>
         </div>
@@ -135,12 +135,12 @@
             <input
               class="form-control form-control-sm"
               placeholder="Nazwa"
-              v-model="company.bankAccounts[index - 1].accountName"
+              v-model.trim="company.bankAccounts[index - 1].accountName"
             />
             <input
               class="form-control form-control-sm"
               placeholder="Numer konta"
-              v-model="company.bankAccounts[index - 1].accountNumber"
+              v-model.trim="company.bankAccounts[index - 1].accountNumber"
             />
           </p>
         </div>

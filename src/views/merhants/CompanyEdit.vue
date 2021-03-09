@@ -6,7 +6,7 @@
           <div class="col-3 offset-5 col-title">
             <input
               class="form-control header"
-              v-model="company.companyName"
+              v-model.trim="company.companyName"
               :placeholder="companyName"
             />
           </div>
@@ -17,7 +17,7 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model="company.nip"
+            v-model.trim="company.nip"
             :placeholder="nip"
           />
         </div>
@@ -27,7 +27,7 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model="company.regon"
+            v-model.trim="company.regon"
             :placeholder="regon"
           />
         </div>
@@ -37,7 +37,7 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model="company.email"
+            v-model.trim="company.email"
             :placeholder="email"
           />
         </div>
@@ -47,17 +47,17 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model="company.address.street"
+            v-model.trim="company.address.street"
             :placeholder="'ul. ' + street"
           />
           <input
             class="form-control form-control-sm"
-            v-model="company.address.houseNumber"
+            v-model.trim="company.address.houseNumber"
             :placeholder="houseNumber"
           />
           <input
             class="form-control form-control-sm"
-            v-model="company.address.postalCode"
+            v-model.trim="company.address.postalCode"
             :placeholder="postalCode"
           />
           <input class="form-control form-control-sm" :placeholder="city" />
@@ -85,12 +85,12 @@
             <input
               class="form-control form-control-sm"
               placeholder="typ"
-              v-model="company.phoneNumbers[index].type"
+              v-model.trim="company.phoneNumbers[index].type"
             />
             <input
               class="form-control form-control-sm"
               placeholder="numer"
-              v-model="company.phoneNumbers[index].number"
+              v-model.trim="company.phoneNumbers[index].number"
             />
           </p>
         </div>
@@ -133,12 +133,12 @@
             <input
               class="form-control form-control-sm"
               placeholder="typ"
-              v-model="company.bankAccounts[index].accountType"
+              v-model.trim="company.bankAccounts[index].accountType"
             />
             <input
               class="form-control form-control-sm"
               placeholder="numer"
-              v-model="company.bankAccounts[index].accountNumber"
+              v-model.trim="company.bankAccounts[index].accountNumber"
             />
           </p>
         </div>
