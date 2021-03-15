@@ -5,6 +5,10 @@ import CompaniesList from '../views/merhants/CompaniesList.vue'
 import CompanyDetail from '../views/merhants/CompanyDetail.vue'
 import CompanyEdit from '../views/merhants/CompanyEdit.vue'
 import CompanyAdd from '../views/merhants/CompanyAdd.vue'
+import DriversList from '../views/drivers/DriversList.vue'
+import DriverAdd from '../views/drivers/DriverAdd.vue'
+import DriverEdit from '../views/drivers/DriverEdit.vue'
+import DriverDetail from '../views/drivers/DriverDetail.vue'
 
 const routes = [
   {
@@ -35,6 +39,25 @@ const routes = [
   {
     path: '/addCompany',
     component: CompanyAdd
+  },
+  {
+    path: '/drivers',
+    component: DriversList
+  },
+  {
+    path: '/driver/:id',
+    component: DriverDetail,
+    props: true,
+    children: [
+      {
+        path: 'edit',
+        component: DriverEdit
+      }
+    ]
+  },
+  {
+    path: '/addDriver',
+    component: DriverAdd
   }
 ]
 
