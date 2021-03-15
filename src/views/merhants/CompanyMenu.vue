@@ -22,7 +22,10 @@ export default {
   },
   computed: {
     isAddMode() {
-      if (this.$route.path.indexOf('company') > -1) {
+      if (this.$route.path.indexOf('companies') > -1) {
+        return false;
+      }
+      if (this.$route.path.indexOf('company') > -1 || this.$route.path.indexOf('Company')) {
         return true;
       } else {
         return false;

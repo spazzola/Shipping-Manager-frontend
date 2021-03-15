@@ -78,7 +78,6 @@
 import NavMenu from "../nav/NavMenu.vue";
 import CompanyMenu from "./CompanyMenu.vue";
 import CompanyEdit from "./CompanyEdit.vue";
-
 export default {
   components: {
     NavMenu,
@@ -105,7 +104,7 @@ export default {
       if (this.$store.getters["companies/getCompany"] === null) {
         return this.selectedCompany;
       } else {
-        this.$store.dispatch('companies/unloadCompany');
+        //this.$store.dispatch('companies/unloadCompany');
         return this.$store.getters["companies/getCompany"];
       }
     },
@@ -168,7 +167,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .content {
   width: 100%;
 }
@@ -176,31 +175,25 @@ export default {
   border-color: #3ec1d3;
   color: #3ec1d3;
 }
-
 .btn-outline-success:hover {
   background-color: #ff9a00;
   color: #f6f7d7;
   border-color: #ff9a00;
 }
-
 .col-title {
   text-align: right;
   font-weight: bold;
 }
-
 .col-content {
   text-align: left !important;
 }
-
 .row-top-margin {
   margin-top: 1%;
 }
-
 p {
   text-align: left;
   margin-bottom: 0;
 }
-
 .btn {
   margin-left: 5%;
 }

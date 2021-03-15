@@ -6,7 +6,7 @@
           <div class="col-3 offset-5 col-title">
             <input
               class="form-control header"
-              v-model.trim="company.companyName"
+              v-model="company.companyName"
               :placeholder="companyName"
             />
           </div>
@@ -17,7 +17,7 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model.trim="company.nip"
+            v-model="company.nip"
             :placeholder="nip"
           />
         </div>
@@ -27,7 +27,7 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model.trim="company.regon"
+            v-model="company.regon"
             :placeholder="regon"
           />
         </div>
@@ -37,7 +37,7 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model.trim="company.email"
+            v-model="company.email"
             :placeholder="email"
           />
         </div>
@@ -47,17 +47,17 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model.trim="company.address.street"
+            v-model="company.address.street"
             :placeholder="'ul. ' + street"
           />
           <input
             class="form-control form-control-sm"
-            v-model.trim="company.address.houseNumber"
+            v-model="company.address.houseNumber"
             :placeholder="houseNumber"
           />
           <input
             class="form-control form-control-sm"
-            v-model.trim="company.address.postalCode"
+            v-model="company.address.postalCode"
             :placeholder="postalCode"
           />
           <input class="form-control form-control-sm" :placeholder="city" />
@@ -66,15 +66,28 @@
       <div class="row row-top-margin">
         <div class="col-2 offset-4 col-title">Telefony kontaktowe:</div>
         <div class="col-2 col-content">
-          <p v-for="phoneNumber in phoneNumbers" :key="phoneNumber.phone">
+          <p
+            v-for="(phoneNumber, index) in selectedCompany.phoneNumbers"
+            :key="index"
+          >
             <input
               class="form-control form-control-sm"
-              :placeholder="phoneNumber.type"
+              v-model.trim="selectedCompany.phoneNumbers[index].type"
+              :placeholder="phoneNumbers[index].type"
+              :key="index"
             />
             <input
               class="form-control form-control-sm"
-              :placeholder="phoneNumber.number"
+              v-model.trim="selectedCompany.phoneNumbers[index].number"
+              :placeholder="phoneNumbers[index].number"
+              :key="index"
             />
+            <button
+              class="btn btn-sm btn-remove remove"
+              @click.stop.prevent="deletePhoneNumber(index)"
+            >
+              <i class="fas fa-times remove"></i>
+            </button>
           </p>
         </div>
       </div>
@@ -85,18 +98,24 @@
             <input
               class="form-control form-control-sm"
               placeholder="typ"
-              v-model.trim="company.phoneNumbers[index].type"
+              v-model="company.phoneNumbers[index].type"
             />
             <input
               class="form-control form-control-sm"
               placeholder="numer"
-              v-model.trim="company.phoneNumbers[index].number"
+              v-model="company.phoneNumbers[index].number"
             />
+            <button
+              class="btn btn-sm btn-remove remove"
+              @click.stop.prevent="removePhoneField"
+            >
+              <i class="fas fa-times remove"></i>
+            </button>
           </p>
         </div>
       </div>
 
-      <div class="row">
+      <div class="row button-row">
         <div class="col-2 offset-6 rotated">
           <button
             class="btn btn-sm btn-remove"
@@ -112,39 +131,55 @@
         <div class="col-2 offset-4 col-title">Konta bankowe:</div>
         <div class="col-2 col-content">
           <p
-            v-for="bankAccount in bankAccounts"
-            :key="bankAccount.accountNumber"
+            v-for="(bankAccount, index) in selectedCompany.bankAccounts"
+            :key="index"
           >
             <input
               class="form-control form-control-sm"
-              :placeholder="bankAccount.accountName"
+              v-model.trim="selectedCompany.bankAccounts[index].accountName"
+              :placeholder="bankAccounts[index].accountName"
             />
             <input
               class="form-control form-control-sm"
-              :placeholder="bankAccount.accountNumber"
+              v-model.trim="selectedCompany.bankAccounts[index].accountNumber"
+              :placeholder="bankAccounts[index].accountNumber"
             />
+            <button
+              class="btn btn-sm btn-remove remove"
+              @click.stop.prevent="deleteBankAccount(index)"
+            >
+              <i class="fas fa-times remove"></i>
+            </button>
           </p>
         </div>
       </div>
 
-      <div class="row" v-for="index in bankAccountsToAdd" :key="index.value">
+      <div class="row" v-for="index in bankAccountsToAdd" :key="index">
         <div class="col-2 offset-6">
           <p>
             <input
               class="form-control form-control-sm"
-              placeholder="typ"
-              v-model.trim="company.bankAccounts[index].accountType"
+              placeholder="Typ"
+              v-model.trim="company.bankAccounts[index].accountName"
+              :key="index"
             />
             <input
               class="form-control form-control-sm"
-              placeholder="numer"
+              placeholder="Numer"
               v-model.trim="company.bankAccounts[index].accountNumber"
+              :key="index"
             />
+            <button
+              class="btn btn-sm btn-remove remove"
+              @click.stop.prevent="removeBankAccountField"
+            >
+              <i class="fas fa-times remove"></i>
+            </button>
           </p>
         </div>
       </div>
 
-      <div class="row" style="margin-bottom: 1%;">
+      <div class="row button-row">
         <div class="col-2 offset-6 rotated">
           <button
             class="btn btn-sm btn-remove"
@@ -168,6 +203,7 @@
         ><button
           class="btn btn-sm btn-outline-danger"
           @click.stop.prevent="goToPreviousPage"
+          style="margin-left: 1rem;"
         >
           Cofnij
         </button>
@@ -178,7 +214,6 @@
 
 <script>
 //import axios from "../../axios-auth";
-
 export default {
   props: [
     "id",
@@ -198,6 +233,8 @@ export default {
       phoneNumbersToAdd: 0,
       bankAccountsToAdd: 0,
       selectedCompany: null,
+      phoneNumbersToDelete: [],
+      bankAccountsToDelete: [],
       company: {
         id: null,
         companyName: null,
@@ -219,7 +256,7 @@ export default {
         bankAccounts: [
           {
             accountNumber: null,
-            acountType: null,
+            acountName: null,
           },
         ],
       },
@@ -235,63 +272,93 @@ export default {
       this.phoneNumbersToAdd += 1;
     },
     addNewBankAccount() {
-      this.company.bankAccounts.push({ accountNumber: null, accountType: null });
+      this.company.bankAccounts.push({
+        accountNumber: null,
+        accountName: null
+      });
       this.bankAccountsToAdd += 1;
     },
     async submitForm() {
-      console.log(this.company.phoneNumbers);
       this.company.id = this.selectedCompany.id;
+
       if (this.company.companyName === null) {
         this.company.companyName = this.selectedCompany.companyName;
       }
+
       if (this.company.nip === null) {
         this.company.nip = this.selectedCompany.nip;
       }
+
       if (this.company.regon === null) {
         this.company.regon = this.selectedCompany.regon;
       }
+
       if (this.company.email === null) {
         this.company.email = this.selectedCompany.email;
       }
+
       if (this.company.address.street === null) {
         this.company.address.street = this.selectedCompany.address.street;
       }
+
       if (this.company.address.houseNumber === null) {
         this.company.address.houseNumber = this.selectedCompany.address.houseNumber;
       }
+
       if (this.company.address.postalCode === null) {
         this.company.address.postalCode = this.selectedCompany.address.postalCode;
       }
+
       if (this.company.address.city === null) {
         this.company.address.city = this.selectedCompany.address.city;
       }
-      if (this.company.phoneNumbers.length === 0) {
-        console.log("nie zmieniono numerow telefonow")
-        this.company.phoneNumbers = this.selectedCompany.phoneNumbers;
-      } else {
-        this.selectedCompany.phoneNumbers.forEach((i) => {
-          this.company.phoneNumbers.push(i);
-        });
-        this.removeEmptyPhoneNumber();
+
+      this.selectedCompany.phoneNumbers.forEach((phone) => {
+        this.company.phoneNumbers.push(phone)
+      });
+
+      this.company.phoneNumbers = this.company.phoneNumbers.filter(function (phone) {
+        return phone.type != null;
+      });
+
+      this.selectedCompany.bankAccounts.forEach((bankAccount) => {
+        this.company.bankAccounts.push(bankAccount)
+      });    
+
+      this.company.bankAccounts = this.company.bankAccounts.filter(function (bankAccount) {
+        return bankAccount.accountNumber != null;
+      });
+
+      if (this.phoneNumbersToDelete.length > 0) {
+        await this.$store.dispatch("phones/deletePhoneNumbers", this.phoneNumbersToDelete);
       }
-      if (this.company.bankAccounts.length === 0) {
-        this.company.bankAccounts = this.selectedCompany.bankAccounts;
-      } else {
-        this.selectedCompany.bankAccounts.forEach((i) => {
-          this.company.bankAccounts.push(i);
-        });
-        this.removeEmptyBankAccount();
+
+      if (this.bankAccountsToDelete.length > 0) {
+        await this.$store.dispatch("bankAccounts/deleteBankAccounts", this.bankAccountsToDelete);
       }
-      console.log(this.company);
-      await this.$store.dispatch('companies/updateCompany', this.company);
+
+      await this.$store.dispatch("companies/setCompany", this.company);
+      await this.$store.dispatch("companies/updateCompany", this.company);
       await this.$store.dispatch("companies/loadCompany", this.company.id);
       this.goToPreviousPage();
     },
-    removeEmptyPhoneNumber() {
-      this.company.phoneNumbers.splice(0, 1);
+    deletePhoneNumber(index) {
+      this.phoneNumbersToDelete.push(this.selectedCompany.phoneNumbers[index]);
+      if (index > -1) {
+        this.selectedCompany.phoneNumbers.splice(index, 1);
+      }
     },
-    removeEmptyBankAccount() {
-      this.company.bankAccounts.splice(0, 1);
+    deleteBankAccount(index) {
+      this.bankAccountsToDelete.push(this.selectedCompany.bankAccounts[index]);
+      if (index > -1) {
+        this.selectedCompany.bankAccounts.splice(index, 1);
+      }
+    },
+    removePhoneField() {
+      this.phoneNumbersToAdd -= 1;
+    },
+    removeBankAccountField() {
+      this.bankAccountsToAdd -= 1;
     }
   },
   computed: {
@@ -300,9 +367,13 @@ export default {
     },
   },
   created() {
-    this.selectedCompany = this.$store.getters[
-      "companies/getAllCompanies"
-    ].find((company) => company.id === parseInt(this.id));
+    if (this.$store.getters["companies/getCompany"] === null) {
+      this.selectedCompany = this.$store.getters[
+        "companies/getAllCompanies"
+      ].find((company) => company.id === parseInt(this.id));
+    } else {
+      this.selectedCompany = this.$store.getters["companies/getCompany"];
+    }
   },
 };
 </script>
@@ -312,18 +383,29 @@ export default {
   text-align: right;
   font-weight: bold;
 }
-
 .col-content {
   text-align: left !important;
 }
-
 i {
   color: green;
   margin-right: 5%;
   transform: rotate(45deg);
 }
-
 .btn-remove {
   color: green !important;
+}
+
+.row {
+  margin-top: 1rem;
+}
+
+.remove {
+  color: red !important;
+  display: inline;
+}
+
+.button-row {
+  margin-top: -0.5rem !important;
+  margin-bottom: 2rem;
 }
 </style>

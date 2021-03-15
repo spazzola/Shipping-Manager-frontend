@@ -27,9 +27,7 @@
         :email="company.email"
       ></company-item>
     </div>
-    <div v-else>
-      <company-add></company-add>
-    </div>
+
   </div>
 </template>
 
@@ -37,14 +35,12 @@
 import NavMenu from "../nav/NavMenu";
 import CompanyMenu from "./CompanyMenu.vue";
 import CompanyItem from "./CompanyItem.vue";
-import CompanyAdd from './CompanyAdd.vue';
 
 export default {
   components: {
     NavMenu,
     CompanyMenu,
-    CompanyItem,
-    CompanyAdd
+    CompanyItem
   },
   data() {
     return {

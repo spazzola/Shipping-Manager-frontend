@@ -38,7 +38,6 @@ export default {
   },
   methods: {
     async deleteCompany() {
-      console.log("clicked " + this.id);
       await this.$store.dispatch("companies/deleteCompany", this.id);
       await this.$store.dispatch("companies/loadCompanies");
       this.$router.replace("/companies");
@@ -47,7 +46,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .content {
   position: relative;
   margin: 2% 0 0 1%;

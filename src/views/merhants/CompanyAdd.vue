@@ -62,43 +62,40 @@
             v-model.trim="company.address.postalCode"
             placeholder="Kod pocztowy"
           />
-          <input 
-          class="form-control form-control-sm" 
-          v-model.trim="company.address.city"
-          placeholder="Miasto" />
+          <input
+            class="form-control form-control-sm"
+            v-model.trim="company.address.city"
+            placeholder="Miasto"
+          />
         </div>
       </div>
       <div class="row row-top-margin">
         <div class="col-2 offset-4 col-title">Telefony kontaktowe:</div>
         <div class="col-2 col-content">
-          <p v-for="phoneNumber in phoneNumbers" :key="phoneNumber.phone">
-            <input class="form-control form-control-sm" placeholder="Typ" />
-            <input
-              class="form-control form-control-sm"
-              placeholder="Numer telefonu"
-            />
-          </p>
-        </div>
-      </div>
-
-      <div class="row" v-for="index in phoneNumbersToAdd" :key="index.value">
-        <div class="col-2 offset-6">
-          <p>
+          <p v-for="index in phoneNumbersToAdd" :key="index">
             <input
               class="form-control form-control-sm"
               placeholder="Rodzaj"
               v-model.trim="company.phoneNumbers[index - 1].type"
+              :key="index"
             />
             <input
               class="form-control form-control-sm"
               placeholder="Numer telefonu"
               v-model.trim="company.phoneNumbers[index - 1].number"
+              :key="index"
             />
+            <button
+              class="btn btn-sm btn-remove remove"
+              @click.stop.prevent="removePhoneField"
+            >
+              <i class="fas fa-times remove"></i>
+            </button>
           </p>
         </div>
       </div>
 
-      <div class="row">
+      <div class="row button-row">
         <div class="col-2 offset-6 rotated">
           <button
             class="btn btn-sm btn-remove"
@@ -113,25 +110,7 @@
       <div class="row row-top-margin">
         <div class="col-2 offset-4 col-title">Konta bankowe:</div>
         <div class="col-2 col-content">
-          <p
-            v-for="bankAccount in bankAccounts"
-            :key="bankAccount.accountNumber"
-          >
-            <input
-              class="form-control form-control-sm"
-              placeholder="Rodzaj"
-            />
-            <input
-              class="form-control form-control-sm"
-              placeholder="Numer konta"
-            />
-          </p>
-        </div>
-      </div>
-
-      <div class="row" v-for="index in bankAccountsToAdd" :key="index.value">
-        <div class="col-2 offset-6">
-          <p>
+          <p  v-for="index in bankAccountsToAdd" :key="index.value">
             <input
               class="form-control form-control-sm"
               placeholder="Nazwa"
@@ -142,11 +121,17 @@
               placeholder="Numer konta"
               v-model.trim="company.bankAccounts[index - 1].accountNumber"
             />
+            <button
+              class="btn btn-sm btn-remove remove"
+              @click.stop.prevent="removeBankAccountField"
+            >
+              <i class="fas fa-times remove"></i>
+            </button>
           </p>
         </div>
       </div>
 
-      <div class="row" style="margin-bottom: 1%">
+      <div class="row button-row">
         <div class="col-2 offset-6 rotated">
           <button
             class="btn btn-sm btn-remove"
@@ -158,14 +143,12 @@
         </div>
       </div>
 
-      <router-link to="/companies"
-        ><button
-          class="btn btn-sm btn-outline-success"
-          @click.stop.prevent="submitForm"
-        >
-          Zapisz
-        </button>
-      </router-link>
+      <button
+        class="btn btn-sm btn-outline-success"
+        @click.stop.prevent="submitForm"
+      >
+        Zapisz
+      </button>
     </form>
   </div>
 </template>
@@ -198,14 +181,14 @@ export default {
         },
         phoneNumbers: [
           {
-            type: '',
+            type: "",
             number: null,
           },
         ],
         bankAccounts: [
           {
-            accountName: '',
-            accountNumber: null
+            accountName: "",
+            accountNumber: null,
           },
         ],
       },
@@ -213,27 +196,31 @@ export default {
   },
   methods: {
     addNewPhoneNumber() {
-      this.company.phoneNumbers.push({ type: '', number: null });
+      this.company.phoneNumbers.push({ type: "", number: null });
       this.phoneNumbersToAdd += 1;
     },
     addNewBankAccount() {
       this.company.bankAccounts.push({
         accountNumber: null,
-        accountName: '',
+        accountName: "",
       });
       this.bankAccountsToAdd += 1;
     },
     submitForm() {
-      this.$store.dispatch('companies/addCompany', this.company);
+      this.$store.dispatch("companies/addCompany", this.company);
       this.$store.dispatch("companies/loadCompanies");
-      this.$router.replace("/companies")
-
-      // axios.post("company/create", this.company, {
-      //   headers: {
-      //     Authorization: "Bearer " + localStorage.getItem("jwt"),
-      //   },
-      // }).then(this.$router.push("/companies"));
+      this.$router.replace("/companies");
     },
+    removePhoneField() {
+      if (this.phoneNumbersToAdd > 1) {
+        this.phoneNumbersToAdd -= 1;
+      }
+    },
+    removeBankAccountField() {
+      if (this.bankAccountsToAdd  > 1) {
+        this.bankAccountsToAdd -= 1;
+      }
+    }
   },
 };
 </script>
@@ -256,5 +243,23 @@ i {
 
 .btn-remove {
   color: green !important;
+}
+
+.btn-remove {
+  color: green !important;
+}
+
+.remove {
+  color: red !important;
+  display: inline;
+}
+
+.row {
+  margin-top: 1rem;
+}
+
+.button-row {
+  margin-top: -0.5rem !important;
+  margin-bottom: 2rem;
 }
 </style>
