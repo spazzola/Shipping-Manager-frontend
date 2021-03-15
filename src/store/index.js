@@ -1,12 +1,20 @@
 import { createStore } from 'vuex';
 
 import companiesModule from './modules/companies/index.js';
+import driversModule from './modules/drivers/index.js';
+import phonesModule from './modules/phones/index.js';
+import platesModule from './modules/plates/index.js';
+import bankAccountsModule from './modules/bankAccounts/index.js';
 
 let timer;
 
 export default createStore({
   modules: {
-    companies: companiesModule
+    companies: companiesModule,
+    drivers: driversModule,
+    phones: phonesModule,
+    plates: platesModule,
+    bankAccounts: bankAccountsModule
   },
   state: {
     jwt: null,
