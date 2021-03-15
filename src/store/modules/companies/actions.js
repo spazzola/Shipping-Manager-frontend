@@ -85,7 +85,6 @@ export default {
         context.commit('updateCompany', data);
     },
     async deleteCompany(context, data) {
-        console.log(data)
         let url = new URL('http://localhost:8080/company/deleteCompany');
         url.search = new URLSearchParams({
             id: data
@@ -101,6 +100,8 @@ export default {
         if (!response.ok) {
             // error
         }
-        
+    },
+    async setCompany(context, data) {
+        context.commit('setCompany', data);
     }
 };
