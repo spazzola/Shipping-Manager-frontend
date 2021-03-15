@@ -22,7 +22,7 @@
           >
         </div>
         <div class="nav-item col-xl-3">
-          <router-link class="nav-link" active-class="active" to="/companies"
+          <router-link class="nav-link" active-class="active" to="/drivers"
             ><i class="fas fa-truck-moving"></i>Kierowcy</router-link
           >
         </div>
