@@ -1,12 +1,12 @@
 <template>
   <div class="row">
-    <div class="col-xl-1 col-lg-2 bg">
+    <div class="col-xl-1 col-lg-2 bg" v-if="!isAddMode">
       <router-link to="/addDriver">
         <i class="fas fa-times rotate"></i>Dodaj kierowce
       </router-link>
     </div>
-    <div class="col-xl-1 col-lg-2 bg" v-if="isAddMode">
-      <router-link to="/companies">
+    <div class="col-xl-1 col-lg-2 bg" v-else>
+      <router-link to="/drivers">
         <i class="fas fa-arrow-left"></i>Wstecz
       </router-link>
     </div>

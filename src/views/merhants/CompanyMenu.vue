@@ -1,11 +1,11 @@
 <template>
   <div class="row">
-    <div class="col-xl-1 col-lg-2 bg">
+    <div class="col-xl-1 col-lg-2 bg" v-if="!isAddMode">
       <router-link to="/addCompany">
         <i class="fas fa-times rotate"></i>Dodaj kontrahenta
       </router-link>
     </div>
-    <div class="col-xl-1 col-lg-2 bg" v-if="isAddMode">
+    <div class="col-xl-1 col-lg-2 bg" v-else>
       <router-link to="/companies">
         <i class="fas fa-arrow-left"></i>Wstecz
       </router-link>
