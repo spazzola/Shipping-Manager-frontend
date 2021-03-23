@@ -5,6 +5,7 @@ import driversModule from './modules/drivers/index.js';
 import phonesModule from './modules/phones/index.js';
 import platesModule from './modules/plates/index.js';
 import bankAccountsModule from './modules/bankAccounts/index.js';
+import ordersModule from './modules/orders/index.js';
 
 let timer;
 
@@ -14,12 +15,15 @@ export default createStore({
     drivers: driversModule,
     phones: phonesModule,
     plates: platesModule,
-    bankAccounts: bankAccountsModule
+    bankAccounts: bankAccountsModule,
+    orders: ordersModule
   },
   state: {
     jwt: null,
     login: null,
-    role: null
+    role: null,
+    name: null,
+    surname: null
   },
   mutations: {
     setUser(state, payload) {
@@ -59,7 +63,6 @@ export default createStore({
         body: JSON.stringify({
             login: payload.login,
             password: payload.password,
-
         })
       });
       
@@ -79,6 +82,8 @@ export default createStore({
       localStorage.setItem('jwt', responseData.jwt);
       localStorage.setItem('login', responseData.login);
       localStorage.setItem('role', responseData.role);
+      localStorage.setItem('name', responseData.name);
+      localStorage.setItem('surname', responseData.surname)
       localStorage.setItem('tokenExpiration', expirationDate);
       
       timer = setTimeout(function () {
@@ -88,7 +93,9 @@ export default createStore({
       context.commit('setUser', {
         jwt: responseData.jwt,
         login: responseData.login,
-        role: responseData.role
+        role: responseData.role,
+        name: responseData.name,
+        surname: responseData.surname
       });
     },
     tryLogin(context) {
@@ -123,7 +130,9 @@ export default createStore({
       context.commit('setUser', {
         jwt: null,
         login: null,
-        role: null
+        role: null,
+        name: null,
+        surname: null
       });
     },
     autoLogout(context) {
