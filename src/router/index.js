@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import TheLogin from '../views/TheLogin.vue'
-import OrderContent from '../views/orders/OrderContent.vue'
+import OrderList from '../views/orders/OrderList.vue'
+import OrderAdd from '../views/orders/OrderAdd.vue'
+import OrderEdit from '../views/orders/OrderEdit.vue'
+import OrderDetail from '../views/orders/OrderDetail.vue'
 import CompaniesList from '../views/merhants/CompaniesList.vue'
 import CompanyDetail from '../views/merhants/CompanyDetail.vue'
 import CompanyEdit from '../views/merhants/CompanyEdit.vue'
@@ -15,11 +18,6 @@ const routes = [
     path: '/',
     name: 'TheLogin',
     component: TheLogin
-  },
-  {
-    path: '/orders',
-    name: 'OrderContent',
-    component: OrderContent
   },
   {
     path: '/companies',
@@ -58,6 +56,25 @@ const routes = [
   {
     path: '/addDriver',
     component: DriverAdd
+  },
+  {
+    path: '/orders',
+    component: OrderList
+  },
+  {
+    path: '/order/:id',
+    component: OrderDetail,
+    props: true,
+    children: [
+      {
+        path: 'edit',
+        component: OrderEdit
+      }
+    ]
+  },
+  {
+    path: '/addOrder',
+    component: OrderAdd
   }
 ]
 
