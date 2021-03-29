@@ -93,25 +93,28 @@
     >
       <div class="col-2 offset-4 col-title">Imię:</div>
       <div class="col-2 col-content">
-        {{ driver.driver.name }}
+        {{ driver.name }}
       </div>
       <div class="col-2 offset-4 col-title">Nazwisko:</div>
       <div class="col-2 col-content">
-        {{ driver.driver.surname }}
+        {{ driver.surname }}
       </div>
       <div class="col-2 offset-4 col-title">Telefony kontaktowe:</div>
       <div class="col-2 col-content">
-        <p
-          v-for="(phoneNumber, index) in driver.driver.phoneNumbers"
-          :key="index"
-        >
-          {{ phoneNumber.type }}: {{ phoneNumber.number }}
+        <p> 
+          {{ driver.firstPhoneNumber }}
+        </p>
+        <p v-if="driver.secondPhoneNumber != null">
+          {{ driver.secondPhoneNumber }}
         </p>
       </div>
-      <div class="col-2 offset-4 col-title" v-if="driver.driver.plates.length > 0">Tablice rejestracyjne:</div>
+      <div class="col-2 offset-4 col-title">Tablice rejestracyjne:</div>
       <div class="col-2 col-content">
-        <p v-for="(plate, index) in driver.driver.plates" :key="index">
-          {{ plate.plateNumber }}
+        <p>
+          {{ driver.firstPlate }}
+        </p>
+        <p v-if="driver.secondPlate != null">
+          {{ driver.secondPlate }}
         </p>
       </div>
     </div>
@@ -155,62 +158,62 @@ export default {
   },
   computed: {
     currentOrder() {
-      if (this.$store.getters["order/getOrder"] === null) {
+      if (this.$store.getters["orders/getOrder"] === null) {
         return this.selectedOrder;
       } else {
         return this.$store.getters["orders/getOrder"];
       }
     },
     orderNumber() {
-      return this.selectedOrder.orderNumber;
+      return this.currentOrder.orderNumber;
     },
     givenBy() {
-      return this.selectedOrder.givenBy.companyName;
+      return this.currentOrder.givenBy.companyName;
     },
     receivedBy() {
-      return this.selectedOrder.receivedBy.companyName;
+      return this.currentOrder.receivedBy.companyName;
     },
     description() {
-      return this.selectedOrder.description;
+      return this.currentOrder.description;
     },
     value() {
-      return this.selectedOrder.value;
+      return this.currentOrder.value;
     },
     currency() {
-      return this.selectedOrder.currency;
+      return this.currentOrder.currency;
     },
     weight() {
-      return this.selectedOrder.weight;
+      return this.currentOrder.weight;
     },
     shipper() {
-      return this.selectedOrder.shipper;
+      return this.currentOrder.shipper;
     },
     createdDate() {
-      return this.selectedOrder.createdDate;
+      return this.currentOrder.createdDate;
     },
     paymentDate() {
-      return this.selectedOrder.paymentDate;
+      return this.currentOrder.paymentDate;
     },
     comment() {
-      return this.selectedOrder.comment;
+      return this.currentOrder.comment;
     },
     loadingPlace() {
-      return this.selectedOrder.loadingInformation.loadingPlace;
+      return this.currentOrder.loadingInformation.loadingPlace;
     },
     minLoadingDate() {
-      return this.selectedOrder.loadingInformation.minLoadingDate;
+      return this.currentOrder.loadingInformation.minLoadingDate;
     },
     maxLoadingDate() {
-      return this.selectedOrder.loadingInformation.maxLoadingDate;
+      return this.currentOrder.loadingInformation.maxLoadingDate;
     },
     unloadingPlace() {
-      return this.selectedOrder.loadingInformation.unloadingPlace;
+      return this.currentOrder.loadingInformation.unloadingPlace;
     },
     minUnloadingDate() {
-      return this.selectedOrder.loadingInformation.minUnloadingDate;
+      return this.currentOrder.loadingInformation.minUnloadingDate;
     },
     maxUnloadingDate() {
-      return this.selectedOrder.loadingInformation.maxUnloadingDate;
+      return this.currentOrder.loadingInformation.maxUnloadingDate;
     },
     editOrder() {
       return this.$route.path + "/edit";
@@ -225,9 +228,10 @@ export default {
     }
   },
   created() {
-    this.selectedOrder = this.$store.getters["orders/getAllOrders"].find(
-      (order) => order.id === parseInt(this.id)
-    );
+    this.selectedOrder = this.$store.getters[
+      "orders/getAllOrders"].find(
+      (order) => order.id === parseInt(this.id));
+    console.log(this.selectedOrder);
   },
 };
 </script>
