@@ -90,10 +90,12 @@
   </div>
 
   <driver-form
+    v-for="index in driversToAdd"
+    :key="index"
     v-show="showDriverForm"
-    @driver-data="driverData"
     :buttonText="'Dodaj zlecenie'"
     :showBackButton="true"
+    @driver-data="driverData"
     @go-back="goBack"
   ></driver-form>
 </template>
@@ -124,6 +126,7 @@ export default {
       showOrderForm: true,
       showCompanyForm: false,
       showDriverForm: false,
+      driversToAdd: 1,
       order: {
         createdDate: null,
         paymentDate: null,
@@ -139,6 +142,7 @@ export default {
         givenById: null,
         drivers: [],
         loadingInformation: {},
+        shipper: null
       },
     };
   },
@@ -148,6 +152,12 @@ export default {
     },
     width() {
       return "width: " + this.progressWidth + "%;";
+    },
+    isLastElement() {
+      if (this.driversToAdd === 1) {
+        return true;
+      }
+      return this.driversToAdd % 2 != 0;
     },
   },
   methods: {
@@ -162,6 +172,12 @@ export default {
       this.order.description = order.description;
       this.order.comment = order.comment;
       this.order.loadingInformation = order.loadingInformation;
+      this.assignShipperToOrder();
+    },
+    assignShipperToOrder() {
+      let name = localStorage.getItem("name");
+      let surname = localStorage.getItem("surname");
+      this.order.shipper = name + " " + surname;
     },
     async companyData(company) {
       this.updateProgressBarAfterCompanyForm();
@@ -172,15 +188,25 @@ export default {
       }
     },
     driverData(drivers) {
-      this.order.drivers.push(drivers);
+      this.order.drivers = drivers;
       this.submitForm();
-      // dispatch order, load orders, then replace route to /orders
+    },
+    addNextDriver() {
+      if (this.driversToAdd >= 2) {
+        this.driversToAdd -= 1;
+      } else {
+        this.driversToAdd += 1;
+      }
     },
     async submitForm() {
       if (this.newCompany != null) {
         await this.$store.dispatch("companies/addCompany", this.newCompany);
         await this.$store.dispatch("companies/loadCompanies");
-        let createdCompany = this.$store.getters["companies/getAllCompanies"].find((company) => company.companyName === this.newCompany.companyName);
+        let createdCompany = this.$store.getters[
+          "companies/getAllCompanies"
+        ].find(
+          (company) => company.companyName === this.newCompany.companyName
+        );
         this.assignCompanyToOrder(createdCompany);
         await this.$store.dispatch("orders/addOrder", this.order);
         // loadCompanies, getCompany id by searching companyName and then assign it to order

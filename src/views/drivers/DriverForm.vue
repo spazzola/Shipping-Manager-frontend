@@ -6,7 +6,7 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model.trim="driver.name"
+            v-model.trim="drivers[0].name"
             placeholder="Imię"
           />
         </div>
@@ -16,7 +16,7 @@
         <div class="col-2 col-content">
           <input
             class="form-control form-control-sm"
-            v-model.trim="driver.surname"
+            v-model.trim="drivers[0].surname"
             placeholder="Nazwisko"
           />
         </div>
@@ -24,22 +24,22 @@
       <div class="row row-top-margin">
         <div class="col-2 offset-4 col-title">Telefony kontaktowe:</div>
         <div class="col-2 col-content">
-          <p v-for="index in phoneNumbersToAdd" :key="index">
+          <p v-for="index in firstDriverphoneNumbersToAdd" :key="index">
             <input
               class="form-control form-control-sm"
               placeholder="Rodzaj"
-              v-model.trim="driver.phoneNumbers[index - 1].type"
+              v-model.trim="drivers[0].phoneNumbers[index - 1].type"
               :key="index"
             />
             <input
               class="form-control form-control-sm"
               placeholder="Numer telefonu"
-              v-model.trim="driver.phoneNumbers[index - 1].number"
+              v-model.trim="drivers[0].phoneNumbers[index - 1].number"
               :key="index"
             />
             <button
               class="btn btn-sm btn-remove remove"
-              @click.stop.prevent="removePhoneField"
+              @click.stop.prevent="removeFirstDriverPhoneField"
             >
               <i class="fas fa-times remove"></i>
             </button>
@@ -52,7 +52,8 @@
           <button
             class="btn btn-sm btn-remove"
             style="width: 70%"
-            @click.stop.prevent="addNewPhoneNumber"
+            @click.stop.prevent="addNewPhoneNumberForFirstDriver"
+            v-if="firstDriverphoneNumbersToAdd < 2"
           >
             <i class="fas fa-times"></i> Dodaj numer kontaktowy
           </button>
@@ -62,16 +63,16 @@
       <div class="row row-top-margin">
         <div class="col-2 offset-4 col-title">Tablice rejestracyjne:</div>
         <div class="col-2 col-content">
-          <p v-for="index in platesToAdd" :key="index">
+          <p v-for="index in firstDriverPlatesToAdd" :key="index">
             <input
               class="form-control form-control-sm"
               placeholder="Numer tablicy rejestracyjnej"
-              v-model.trim="driver.plates[index - 1].plateNumber"
+              v-model.trim="drivers[0].plates[index - 1].plateNumber"
               :key="index"
             />
             <button
               class="btn btn-sm btn-remove remove"
-              @click.stop.prevent="removePlateField"
+              @click.stop.prevent="removeFirstDriverPlateField"
             >
               <i class="fas fa-times remove"></i>
             </button>
@@ -84,9 +85,119 @@
           <button
             class="btn btn-sm btn-remove"
             style="width: 70%"
-            @click.stop.prevent="addNewPlate"
+            @click.stop.prevent="addNewPlateForFirstDriver"
+            v-if="firstDriverPlatesToAdd < 2"
           >
             <i class="fas fa-times"></i> Dodaj tablice rejestracyjną
+          </button>
+        </div>
+      </div>
+
+      <div v-if="showNextDriverForm">
+        <form>
+          <div class="row row-top-margin">
+            <div class="col-2 offset-4 col-title">Imię:</div>
+            <div class="col-2 col-content">
+              <input
+                class="form-control form-control-sm"
+                v-model.trim="drivers[1].name"
+                placeholder="Imię"
+              />
+            </div>
+          </div>
+          <div class="row row-top-margin">
+            <div class="col-2 offset-4 col-title">Nazwisko:</div>
+            <div class="col-2 col-content">
+              <input
+                class="form-control form-control-sm"
+                v-model.trim="drivers[1].surname"
+                placeholder="Nazwisko"
+              />
+            </div>
+          </div>
+          <div class="row row-top-margin">
+            <div class="col-2 offset-4 col-title">Telefony kontaktowe:</div>
+            <div class="col-2 col-content">
+              <p v-for="index in secondDriverPhoneNumbersToAdd" :key="index">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="Rodzaj"
+                  v-model.trim="drivers[1].phoneNumbers[index - 1].type"
+                  :key="index"
+                />
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="Numer telefonu"
+                  v-model.trim="drivers[1].phoneNumbers[index - 1].number"
+                  :key="index"
+                />
+                <button
+                  class="btn btn-sm btn-remove remove"
+                  @click.stop.prevent="removeSecondDriverPhoneField"
+                >
+                  <i class="fas fa-times remove"></i>
+                </button>
+              </p>
+            </div>
+          </div>
+
+          <div class="row button-row">
+            <div class="col-2 offset-6 rotated">
+              <button
+                class="btn btn-sm btn-remove"
+                style="width: 70%"
+                @click.stop.prevent="addNewPhoneNumberForSecondDriver"
+                v-if="secondDriverPhoneNumbersToAdd < 2"
+              >
+                <i class="fas fa-times"></i> Dodaj numer kontaktowy
+              </button>
+            </div>
+          </div>
+
+          <div class="row row-top-margin">
+            <div class="col-2 offset-4 col-title">Tablice rejestracyjne:</div>
+            <div class="col-2 col-content">
+              <p v-for="index in secondDriverPlatesToAdd" :key="index">
+                <input
+                  class="form-control form-control-sm"
+                  placeholder="Numer tablicy rejestracyjnej"
+                  v-model.trim="drivers[1].plates[index - 1].plateNumber"
+                  :key="index"
+                />
+                <button
+                  class="btn btn-sm btn-remove remove"
+                  @click.stop.prevent="removeFirstDriverPlateField"
+                >
+                  <i class="fas fa-times remove"></i>
+                </button>
+              </p>
+            </div>
+          </div>
+
+          <div class="row button-row">
+            <div class="col-2 offset-6 rotated">
+              <button
+                class="btn btn-sm btn-remove"
+                style="width: 70%"
+                @click.stop.prevent="addNewPlateForSecondDriver"
+                v-if="secondDriverPlatesToAdd < 2"
+              >
+                <i class="fas fa-times"></i> Dodaj tablice rejestracyjną
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="row button-row">
+        <div class="col-2 offset-6">
+          <button
+            :class="successOrRemoveClass"
+            @click.stop.prevent="addNextDriver"
+            v-if="showBackButton"
+            style="margin-right: 1rem"
+          >
+            {{ addOrRemoveBtnText }}
           </button>
         </div>
       </div>
@@ -114,52 +225,112 @@ export default {
   props: ["buttonText", "showBackButton"],
   data() {
     return {
-      phoneNumbersToAdd: 1,
-      platesToAdd: 1,
-      driver: {
-        name: null,
-        surname: null,
-        plates: [
-          {
-            plateNumber: "",
-          },
-        ],
-        phoneNumbers: [
-          {
-            type: "",
-            number: null,
-          },
-        ],
-      },
+      firstDriverphoneNumbersToAdd: 1,
+      firstDriverPlatesToAdd: 1,
+      secondDriverPhoneNumbersToAdd: 1,
+      secondDriverPlatesToAdd: 1,
+      showNextDriverForm: false,
+      drivers: []
     };
   },
-  methods: {
-    addNewPhoneNumber() {
-      this.driver.phoneNumbers.push({ type: "", number: null });
-      this.phoneNumbersToAdd += 1;
-    },
-    addNewPlate() {
-      this.driver.plates.push({
-        plateNumber: "",
-      });
-      this.platesToAdd += 1;
-    },
-    async submitForm() {
-      this.$emit("driver-data", this.driver)
-    },
-    removePhoneField() {
-      if (this.phoneNumbersToAdd > 1) {
-        this.phoneNumbersToAdd -= 1;
+  computed: {
+    addOrRemoveBtnText() {
+      if (this.showNextDriverForm === false) {
+        return "Dodaj kolejnego kierowcę";
+      } else {
+        return "Usuń kierowcę";
       }
     },
-    removePlateField() {
-      if (this.platesToAdd > 1) {
-        this.platesToAdd -= 1;
+    successOrRemoveClass() {
+      if (this.showNextDriverForm === false) {
+        return "btn btn-sm btn-outline-success";
+      } else {
+        return "btn btn-sm btn-outline-danger";
+      }
+    },
+  },
+  methods: {
+    addNewPhoneNumberForFirstDriver() {
+      this.drivers[0].phoneNumbers.push({ type: "", number: null });
+      this.firstDriverphoneNumbersToAdd += 1;
+    },
+    removeFirstDriverPhoneField() {
+      if (this.firstDriverphoneNumbersToAdd > 1) {
+        this.firstDriverphoneNumbersToAdd -= 1;
+      }
+    },
+    addNewPlateForFirstDriver() {
+      this.drivers[0].plates.push({
+        plateNumber: ""
+      });
+      this.firstDriverPlatesToAdd += 1;
+    },
+    addNewPhoneNumberForSecondDriver() {
+      this.drivers[1].phoneNumbers.push({ type: "", number: null });
+      this.secondDriverPhoneNumbersToAdd += 1;
+    },
+    removeSecondDriverPhoneField() {
+      if (this.secondDriverPhoneNumbersToAdd > 1) {
+        this.secondDriverPhoneNumbersToAdd -= 1;
+      }
+    },
+    addNewPlateForSecondDriver() {
+      this.drivers[1].plates.push({
+        plateNumber: ""
+      });
+      this.secondDriverPlatesToAdd += 1;
+    },
+    removeFirstDriverPlateField() {
+      if (this.secondDriverPlatesToAdd > 1) {
+        this.secondDriverPlatesToAdd -= 1;
+      }
+    },
+    async submitForm() {
+      this.$emit("driver-data", this.drivers);
+    },
+    addNextDriver() {
+      if (this.showNextDriverForm === false) {
+        this.drivers.push({
+          name: null,
+          surname: null,
+          plates: [
+            {
+              plateNumber: "",
+            },
+          ],
+          phoneNumbers: [
+            {
+              type: "",
+              number: null,
+            },
+          ],
+        });
+        this.showNextDriverForm = true;
+      } else {
+        this.showNextDriverForm = false;
+        this.drivers.pop();
       }
     },
     goBack() {
       this.$emit("go-back");
-    }
+    },
+  },
+  created() {
+    this.drivers.push({
+      name: null,
+      surname: null,
+      plates: [
+        {
+          plateNumber: "",
+        },
+      ],
+      phoneNumbers: [
+        {
+          type: "",
+          number: null,
+        },
+      ],
+    });
   },
 };
 </script>
