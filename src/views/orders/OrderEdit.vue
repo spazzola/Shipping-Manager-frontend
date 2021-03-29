@@ -66,6 +66,7 @@ export default {
       showLoadingInfo: false,
       showDriversInfo: false,
       order: {
+        id: this.selectedOrder.id,
         orderType: null,
         givenById: null,
         receivedById: null,
@@ -119,6 +120,7 @@ export default {
       drivers.forEach((driver) => {
         this.order.drivers.push(driver.driver);
       });
+      console.log(this.order.drivers);
       this.submitForm();
     },
     async submitForm() {
