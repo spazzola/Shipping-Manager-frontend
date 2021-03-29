@@ -24,7 +24,7 @@
       <div class="row row-top-margin">
         <div class="col-2 offset-4 col-title">Telefony kontaktowe:</div>
         <div class="col-2 col-content">
-          <p v-for="index in firstDriverphoneNumbersToAdd" :key="index">
+          <p v-for="index in firstDriverPhoneNumbersToAdd" :key="index">
             <input
               class="form-control form-control-sm"
               placeholder="Rodzaj"
@@ -53,7 +53,7 @@
             class="btn btn-sm btn-remove"
             style="width: 70%"
             @click.stop.prevent="addNewPhoneNumberForFirstDriver"
-            v-if="firstDriverphoneNumbersToAdd < 2"
+            v-if="firstDriverPhoneNumbersToAdd < 2"
           >
             <i class="fas fa-times"></i> Dodaj numer kontaktowy
           </button>
@@ -225,7 +225,7 @@ export default {
   props: ["buttonText", "showBackButton"],
   data() {
     return {
-      firstDriverphoneNumbersToAdd: 1,
+      firstDriverPhoneNumbersToAdd: 1,
       firstDriverPlatesToAdd: 1,
       secondDriverPhoneNumbersToAdd: 1,
       secondDriverPlatesToAdd: 1,
@@ -252,11 +252,11 @@ export default {
   methods: {
     addNewPhoneNumberForFirstDriver() {
       this.drivers[0].phoneNumbers.push({ type: "", number: null });
-      this.firstDriverphoneNumbersToAdd += 1;
+      this.firstDriverPhoneNumbersToAdd += 1;
     },
     removeFirstDriverPhoneField() {
-      if (this.firstDriverphoneNumbersToAdd > 1) {
-        this.firstDriverphoneNumbersToAdd -= 1;
+      if (this.firstDriverPhoneNumbersToAdd > 1) {
+        this.firstDriverPhoneNumbersToAdd -= 1;
       }
     },
     addNewPlateForFirstDriver() {
