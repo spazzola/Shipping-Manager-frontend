@@ -18,7 +18,7 @@
             </router-link>
             <button 
             class="btn btn-sm btn-outline-success btn-font btn-right-margin"
-            
+            @click="createInvoice"
             v-if="!isInvoiceCreated">
               Wystaw FV
             </button>
@@ -71,7 +71,29 @@ export default {
       await this.$store.dispatch("orders/deleteOrder", this.id);
       await this.$store.dispatch("orders/loadOrders");
       this.$router.replace("/orders");
+    },
+    async createInvoice() {
+      let selectedOrder = this.$store.getters[
+      "orders/getAllOrders"].find(
+      (order) => order.id === parseInt(this.id));
+      console.log(selectedOrder);
+      let createInvoiceRequest = {
+        orderId: selectedOrder.id,
+        issuedDate: selectedOrder.createdDate,
+        daysTillPayment: selectedOrder.daysTillPayment,
+        paidAmount: 0,
+        issuedIn: selectedOrder.issuedIn,
+        paid: false,
+        productName: "Usługa transportowa",
+        paymentMethod: "Przelew"
+      };
+
+      await this.$store.dispatch("invoices/createInvoiceToOrder", createInvoiceRequest);
+      await this.$store.dispatch("orders/loadOrders");
     }
+  },
+  created() {
+    console.log(this.isInvoiceCreated);
   }
 };
 </script>
