@@ -23,8 +23,8 @@
               Wystaw FV
             </button>
             <button 
-            style=""
             class="btn btn-sm btn-outline-success btn-font"
+            @click="createPdf"
             >
               Generuj PDF
             </button>
@@ -76,7 +76,7 @@ export default {
       let selectedOrder = this.$store.getters[
       "orders/getAllOrders"].find(
       (order) => order.id === parseInt(this.id));
-      console.log(selectedOrder);
+
       let createInvoiceRequest = {
         orderId: selectedOrder.id,
         issuedDate: selectedOrder.createdDate,
@@ -90,10 +90,10 @@ export default {
 
       await this.$store.dispatch("invoices/createInvoiceToOrder", createInvoiceRequest);
       await this.$store.dispatch("orders/loadOrders");
+    },
+    createPdf() {
+      this.$store.dispatch("orders/createPdf", this.id);
     }
-  },
-  created() {
-    console.log(this.isInvoiceCreated);
   }
 };
 </script>

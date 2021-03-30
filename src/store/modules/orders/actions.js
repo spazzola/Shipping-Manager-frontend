@@ -111,5 +111,48 @@ export default {
     },
     async setOrder(context, data) {
         context.commit('setOrder', data);
+    },
+    async createPdf(context, data) {
+        let url = new URL('http://localhost:8080/order/createPdf');
+        url.search = new URLSearchParams({
+            id: data
+        })
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': "Bearer " + localStorage.getItem("jwt"),
+                'Accept': 'application/octet-stream'
+            },
+        }).then((res) => res.arrayBuffer())
+            .then(data => {
+                var base64Str = Buffer.from(data).toString('base64');
+
+                var binaryString = window.atob(base64Str);
+                var binaryLen = binaryString.length;
+                var bytes = new Uint8Array(binaryLen);
+                for (var i = 0; i < binaryLen; i++) {
+                    var ascii = binaryString.charCodeAt(i);
+                    bytes[i] = ascii;
+                }
+                var arrBuffer = bytes;
+
+                var newBlob = new Blob([arrBuffer], { type: "application/pdf" });
+
+                if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                    window.navigator.msSaveOrOpenBlob(newBlob);
+                    return;
+                }
+
+                var data = window.URL.createObjectURL(newBlob);
+
+                var link = document.createElement('a');
+                document.body.appendChild(link);
+                link.href = data;
+                link.download = "Zlecenie.pdf";
+                link.click();
+                window.URL.revokeObjectURL(data);
+                link.remove();
+            })
     }
 };

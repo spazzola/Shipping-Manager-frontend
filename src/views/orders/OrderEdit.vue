@@ -120,7 +120,6 @@ export default {
       drivers.forEach((driver) => {
         this.order.drivers.push(driver.driver);
       });
-      console.log(this.order.drivers);
       this.submitForm();
     },
     async submitForm() {
