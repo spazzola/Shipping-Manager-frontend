@@ -54,6 +54,7 @@ export default {
       return this.shipper;
     },
     givenByInfo() {
+      //console.log(this.givenBy);
       return this.givenBy.companyName;
     },
     receivedByInfo() {

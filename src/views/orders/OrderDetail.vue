@@ -231,7 +231,6 @@ export default {
     this.selectedOrder = this.$store.getters[
       "orders/getAllOrders"].find(
       (order) => order.id === parseInt(this.id));
-    console.log(this.selectedOrder);
   },
 };
 </script>

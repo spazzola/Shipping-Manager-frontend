@@ -222,8 +222,9 @@ export default {
         this.order.receivedById = company.id;
       }
       if (this.order.orderType === "RECEIVED") {
-        this.order.givenById === company.id;
+        this.order.givenById = company.id;
       }
+      console.log(this.order);
     },
     goBack() {
       if (this.showCompanyForm === true) {
