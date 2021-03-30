@@ -1,6 +1,8 @@
 <template>
   <nav-menu></nav-menu>
-  <order-menu @changeToMyOrAllOrders="changeOrders" @changeToGivenOrReceivedOrders="changeOrders"></order-menu>
+  <order-menu 
+  @changeToMyOrAllOrders="changeOrders" 
+  @changeToGivenOrReceivedOrders="changeOrders"></order-menu>
   <div class="content">
     <table>
       <thead>
@@ -21,7 +23,7 @@
 
     <div v-if="!showBackButton">
       <order-item
-        v-for="order in allOrders"
+        v-for="order in orders"
         :key="order.id"
         :id="order.id"
         :isInvoiceCreated="order.isInvoiceCreated"
@@ -50,34 +52,73 @@ export default {
   data() {
     return {
       status: {
-        showAllOrders: true,
-        showGivenOrders: true,
+        allOrders: true,
+        givenOrders: true,
+        showBackButton: false,
       }
     }
   },
   computed: {
-    allOrders() {
-      return this.$store.getters["orders/getAllOrders"];
+    showAllOrders() {
+      return this.status.allOrders;
+    },
+    showGivenOrders() {
+      return this.status.givenOrders;
+    },
+    orders() {
+      let resultOrders = [];
+      if (this.showAllOrders === true) {
+        resultOrders = resultOrders.concat(this.$store.getters["orders/getAllOrders"]);
+      }
+
+      if (this.showAllOrders === false) {
+        resultOrders = [];
+        let name = localStorage.getItem("name");
+        let surname = localStorage.getItem("surname");
+        let shipper = name + " " + surname;
+
+        resultOrders = resultOrders.concat(this.$store.getters["orders/getAllOrders"].filter(
+        (order) => order.shipper === shipper));
+      }
+
+      if (this.showAllOrders === true && this.showGivenOrders === true) {
+         resultOrders = resultOrders.filter((order) => order.orderType === "GIVEN");
+      }
+      if (this.showAllOrders === true && this.showGivenOrders === false) {
+        resultOrders = resultOrders.filter((order) => order.orderType === "RECEIVED");
+      }
+
+      if (this.showAllOrders === false && this.showGivenOrders === true) {
+        resultOrders = resultOrders.filter((order) => order.orderType === "GIVEN");
+      }
+      if (this.showAllOrders === false && this.showGivenOrders === false) {
+        resultOrders = resultOrders.filter((order) => order.orderType === "RECEIVED");
+      }
+
+      // if (this.showGivenOrders === true && this.showAllOrders === true) {
+      //   return this.$store.getters["orders/getAllOrders"].filter(
+      //   (order) => order.shipper === shipper && order.orderType === "GIVEN");
+      // }
+
+      return resultOrders;
     }
   },
   methods: {
     changeOrders(status) {
       if (status.showAllOrders === true) {
-        // show all orders
+        this.status.allOrders = true;
       } else {
-        // show my orders
+        this.status.allOrders = false;
       }
 
       if (status.showGivenOrders === true) {
-        // show given orders
+        this.status.givenOrders = true;
       } else {
-        // show received orders
+        this.status.givenOrders = false;
       }
-      this.status.showAllOrders = status;
     },
   },
   created() {
-    console.log(this.$store.getters["orders/getAllOrders"]);
     this.$store.dispatch("orders/loadOrders");
   }
 };
