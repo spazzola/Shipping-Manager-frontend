@@ -1,15 +1,17 @@
 <template>
   <nav-menu></nav-menu>
-  <order-menu 
-  @changeToMyOrAllOrders="changeOrders" 
-  @changeToGivenOrReceivedOrders="changeOrders"></order-menu>
+  <order-menu
+    @changeToMyOrAllOrders="changeOrders"
+    @changeToGivenOrReceivedOrders="changeOrders"
+    @sortByProperty="changeOrders"
+  ></order-menu>
   <div class="content">
     <table>
       <thead>
         <tr>
           <th scope="col"></th>
           <th scope="col"></th>
-          
+
           <th scope="col">Numer zamówienia</th>
           <th scope="col">Data utworzenia</th>
           <th scope="col">Spedytor</th>
@@ -41,13 +43,13 @@
 <script>
 import NavMenu from "../nav/NavMenu.vue";
 import OrderMenu from "./OrderMenu.vue";
-import OrderItem from './OrderItem.vue';
+import OrderItem from "./OrderItem.vue";
 
 export default {
   components: {
     NavMenu,
     OrderMenu,
-    OrderItem
+    OrderItem,
   },
   data() {
     return {
@@ -55,8 +57,12 @@ export default {
         allOrders: true,
         givenOrders: true,
         showBackButton: false,
-      }
-    }
+        selectBy: {
+          by: "none",
+          value: null,
+        },
+      },
+    };
   },
   computed: {
     showAllOrders() {
@@ -68,7 +74,9 @@ export default {
     orders() {
       let resultOrders = [];
       if (this.showAllOrders === true) {
-        resultOrders = resultOrders.concat(this.$store.getters["orders/getAllOrders"]);
+        resultOrders = resultOrders.concat(
+          this.$store.getters["orders/getAllOrders"]
+        );
       }
 
       if (this.showAllOrders === false) {
@@ -77,31 +85,54 @@ export default {
         let surname = localStorage.getItem("surname");
         let shipper = name + " " + surname;
 
-        resultOrders = resultOrders.concat(this.$store.getters["orders/getAllOrders"].filter(
-        (order) => order.shipper === shipper));
+        resultOrders = resultOrders.concat(
+          this.$store.getters["orders/getAllOrders"].filter(
+            (order) => order.shipper === shipper
+          )
+        );
       }
 
       if (this.showAllOrders === true && this.showGivenOrders === true) {
-         resultOrders = resultOrders.filter((order) => order.orderType === "GIVEN");
+        resultOrders = resultOrders.filter(
+          (order) => order.orderType === "GIVEN"
+        );
       }
       if (this.showAllOrders === true && this.showGivenOrders === false) {
-        resultOrders = resultOrders.filter((order) => order.orderType === "RECEIVED");
+        resultOrders = resultOrders.filter(
+          (order) => order.orderType === "RECEIVED"
+        );
       }
 
       if (this.showAllOrders === false && this.showGivenOrders === true) {
-        resultOrders = resultOrders.filter((order) => order.orderType === "GIVEN");
+        resultOrders = resultOrders.filter(
+          (order) => order.orderType === "GIVEN"
+        );
       }
       if (this.showAllOrders === false && this.showGivenOrders === false) {
-        resultOrders = resultOrders.filter((order) => order.orderType === "RECEIVED");
+        resultOrders = resultOrders.filter(
+          (order) => order.orderType === "RECEIVED"
+        );
       }
 
-      // if (this.showGivenOrders === true && this.showAllOrders === true) {
-      //   return this.$store.getters["orders/getAllOrders"].filter(
-      //   (order) => order.shipper === shipper && order.orderType === "GIVEN");
-      // }
+      if (this.status.selectBy.by === "companyName") {
+        let companyName = this.status.selectBy.value;
+        resultOrders = resultOrders.filter(
+          (order) =>
+            order.givenBy.companyName.includes(companyName) ||
+            order.receivedBy.companyName.includes(companyName)
+        );
+      }
+      if (this.status.selectBy.by === "nip") {
+        let nip = this.status.selectBy.value;
+        resultOrders = resultOrders.filter(
+          (order) =>
+            order.givenBy.nip.includes(nip) ||
+            order.receivedBy.nip.includes(nip)
+        );
+      }
 
       return resultOrders;
-    }
+    },
   },
   methods: {
     changeOrders(status) {
@@ -116,11 +147,13 @@ export default {
       } else {
         this.status.givenOrders = false;
       }
+      this.status.selectBy = status.selectBy;
+      console.log(this.status.selectBy);
     },
   },
   created() {
     this.$store.dispatch("orders/loadOrders");
-  }
+  },
 };
 </script>
 
@@ -153,7 +186,7 @@ table th:nth-child(6),
 table th:nth-child(7),
 table th:nth-child(8),
 table th:nth-child(9),
-table th:nth-child(10)  {
+table th:nth-child(10) {
   width: 33%;
 }
 
