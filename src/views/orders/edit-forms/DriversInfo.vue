@@ -14,8 +14,8 @@
       <div class="col-2 col-content">
         <input
           class="form-control form-control-sm"
-          v-model.trim="drivers[driverIndex].driver.name"
-          :placeholder="driver.driver.name"
+          v-model.trim="drivers[driverIndex].name"
+          :placeholder="driver.name"
         />
       </div>
       <div class="col-2 offset-4 col-title additional-top-margin">
@@ -24,48 +24,51 @@
       <div class="col-2 col-content additional-top-margin">
         <input
           class="form-control form-control-sm"
-          v-model.trim="drivers[driverIndex].driver.surname"
-          :placeholder="driver.driver.surname"
+          v-model.trim="drivers[driverIndex].surname"
+          :placeholder="driver.surname"
         />
       </div>
       <div class="col-2 offset-4 col-title additional-top-margin">
         Telefony kontaktowe:
       </div>
       <div class="col-2 col-content additional-top-margin">
-        <p
-          v-for="(phoneNumber, phoneIndex) in driver.driver.phoneNumbers"
-          :key="phoneIndex"
-        >
+        <div  v-if="drivers[driverIndex].firstPhoneNumber !== null">
           <input
             class="form-control form-control-sm"
-            v-model="drivers[driverIndex].driver.phoneNumbers[phoneIndex].type"
-            :placeholder="phoneNumber.type"
+            v-model="drivers[driverIndex].firstPhoneNumber"
+            :placeholder="driver.firstPhoneNumber"
           />
-          <input
+        </div>
+          <div v-if="drivers[driverIndex].secondPhoneNumber !== null">
+            <input
             class="form-control form-control-sm"
-            v-model="
-              drivers[driverIndex].driver.phoneNumbers[phoneIndex].number
-            "
-            :placeholder="phoneNumber.number"
+            v-model="drivers[driverIndex].secondPhoneNumber"
+            :placeholder="driver.secondPhoneNumber"
           />
-        </p>
+          </div>
+        
       </div>
       <div
-        class="col-2 offset-4 col-title"
-        v-if="driver.driver.plates.length != 0"
+        class="col-2 offset-4 col-title additional-top-margin"
       >
         Tablice rejestracyjne:
       </div>
-      <div class="col-2 col-content">
-        <p
-          v-for="(plate, plateIndex) in driver.driver.plates"
-          :key="plateIndex"
-        >
+      <div class="col-2 col-content additional-top-margin">
+        <div v-if="drivers[driverIndex].firstPlate !== null">
           <input
             class="form-control form-control-sm"
-            v-model="drivers[driverIndex].driver.plates[plateIndex].plateNumber"
+            v-model="drivers[driverIndex].firstPlate"
+            :placeholder="driver.firstPlate"
           />
-        </p>
+        </div>
+        <div v-if="drivers[driverIndex].secondPlate !== null">
+          <input
+            class="form-control form-control-sm"
+            v-model="drivers[driverIndex].secondPlate"
+            :placeholder="driver.secondPlate"
+          />
+        </div>
+
       </div>
     </div>
     <div class="button-row">
@@ -104,6 +107,7 @@ export default {
   },
   created() {
     this.drivers = this.selectedOrder.orderDrivers;
+    console.log(this.selectedOrder);
   },
 };
 </script>
