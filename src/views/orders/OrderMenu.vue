@@ -44,7 +44,44 @@
     </div>
 
     <div class="col-xl-2 col-lg-2 bg">
-      
+      <select
+        class="form-select"
+        id="month"
+        v-model="status.date.month"
+        @change="changeMonth($event)"
+      >
+        <option value="1">Styczeń</option>
+        <option value="2">Luty</option>
+        <option value="3">Marzec</option>
+        <option value="4">Kwiecień</option>
+        <option value="5">Maj</option>
+        <option value="6">Czerwiec</option>
+        <option value="7">Lipiec</option>
+        <option value="8">Sierpień</option>
+        <option value="9">Wrzesien</option>
+        <option value="10">Październik</option>
+        <option value="11">Listopad</option>
+        <option value="12">Grudzień</option>
+      </select>
+      <select
+        class="form-select"
+        id="year"
+        v-model="status.date.year"
+        @change="changeYear($event)"
+        :selected:="year"
+      >
+        <option value="2020">2020</option>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>
+        <option value="2027">2027</option>
+        <option value="2028">2028</option>
+        <option value="2029">2029</option>
+        <option value="2030">2030</option>
+      </select>
     </div>
   </div>
 </template>
@@ -64,6 +101,11 @@ export default {
         selectBy: {
           by: "none",
           value: null,
+        },
+        date: {
+          day: 1,
+          month: this.getMonth(),
+          year: this.getYear(),
         },
       },
       typedProperty: null,
@@ -94,12 +136,44 @@ export default {
     },
     changeSelectBy(value) {
       this.status.selectBy.by = value.target.value;
-    }
+    },
+    getDate() {
+      let currentDateWithFormat = new Date()
+        .toJSON()
+        .slice(0, 10)
+        .replace(/-/g, "/");
+
+      return currentDateWithFormat;
+    },
+    getMonth() {
+      let currentDate = this.getDate();
+      let monthStr = currentDate.slice(5, 7);
+      if (monthStr.charAt(0) === '0') {
+        return monthStr.slice(1, 2);
+      } else {
+        return monthStr;
+      }
+    },
+    getYear() {
+      let currentDate = this.getDate();
+      return currentDate.slice(0, 4);
+    },
+    changeMonth(event) {
+      this.status.date.month = event.target.value;
+      this.$emit("sortByDate", this.status);
+    },
+    changeYear(event) {
+      this.status.date.year = event.target.value;
+      this.$emit("sortByDate", this.status);
+    },
   },
   updated() {
     if (this.status.selectBy.value !== null) {
       this.$emit("sortByProperty", this.status);
     }
+  },
+  created() {
+    this.$emit("sortByDate", this.status);
   },
 };
 </script>

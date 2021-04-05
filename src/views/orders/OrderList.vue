@@ -4,6 +4,7 @@
     @changeToMyOrAllOrders="changeOrders"
     @changeToGivenOrReceivedOrders="changeOrders"
     @sortByProperty="changeOrders"
+    @sortByDate="changeOrders"
   ></order-menu>
   <div class="content">
     <table>
@@ -60,6 +61,11 @@ export default {
         selectBy: {
           by: "none",
           value: null,
+        },
+        date: {
+          day: 1,
+          month: null,
+          year: null,
         },
       },
     };
@@ -131,6 +137,11 @@ export default {
         );
       }
 
+      if (this.status.date.month !== null) {
+        let currentDate = this.buildDate();
+        resultOrders = resultOrders.filter((order) => order.createdDate.includes(currentDate));
+      }
+
       return resultOrders;
     },
   },
@@ -148,7 +159,15 @@ export default {
         this.status.givenOrders = false;
       }
       this.status.selectBy = status.selectBy;
-      console.log(this.status.selectBy);
+      this.status.date = status.date;
+    },
+    buildDate() {
+      let currentMonth = this.status.date.month;
+      if (currentMonth.length === 1) {
+        currentMonth = "0" + currentMonth;
+      }
+      let currentYear = this.status.date.year;
+      return "/" + currentMonth + "/" + currentYear + " " + "00:00";
     },
   },
   created() {
