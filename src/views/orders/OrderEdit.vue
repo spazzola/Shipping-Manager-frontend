@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <form>
-      <div class="progress">
+      <div class="progress" style="margin-top: -1.65rem;">
         <div
           class="progress-bar bg-success"
           role="progressbar"
@@ -79,7 +79,7 @@ export default {
         createdDate: null,
         paymentDate: null,
         comment: null,
-        drivers: [],
+        orderDrivers: [],
         loadingInformation: {},
       },
     };
@@ -116,15 +116,16 @@ export default {
       this.order.loadingInformation = loadingInformation;
     },
     driversInfo(drivers) {
-      this.order.drivers = [];
+      this.order.orderDrivers = [];
       drivers.forEach((driver) => {
-        this.order.drivers.push(driver.driver);
+        this.order.orderDrivers.push(driver);
       });
       this.submitForm();
     },
     async submitForm() {
       this.showDriversInfo = false;
       await this.$store.dispatch("orders/setOrder", this.order);
+      console.log(this.order);
       await this.$store.dispatch("orders/updateOrder", this.order);
       await this.$store.dispatch("orders/loadOrder", this.id);
       this.goToPreviousPage();

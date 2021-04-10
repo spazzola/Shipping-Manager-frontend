@@ -1,6 +1,7 @@
 <template>
   <nav-menu></nav-menu>
   <order-menu
+    :isAddMode="false"
     @changeToMyOrAllOrders="changeOrders"
     @changeToGivenOrReceivedOrders="changeOrders"
     @sortByProperty="changeOrders"

@@ -1,6 +1,7 @@
 <template>
   <nav-menu></nav-menu>
-  <div class="progress">
+  <order-menu :isAddMode="true"></order-menu>
+  <div class="progress" style="margin-top: -2.15rem;">
     <div
       class="progress-bar bg-success"
       role="progressbar"
@@ -102,6 +103,7 @@
 
 <script>
 import NavMenu from "../nav/NavMenu.vue";
+import OrderMenu from './OrderMenu.vue';
 import OrderForm from "./OrderForm.vue";
 import DriverForm from "../drivers/DriverForm.vue";
 import CompanyForm from "../merhants/CompanyForm.vue";
@@ -109,6 +111,7 @@ import CompanyForm from "../merhants/CompanyForm.vue";
 export default {
   components: {
     NavMenu,
+    OrderMenu,
     OrderForm,
     DriverForm,
     CompanyForm,

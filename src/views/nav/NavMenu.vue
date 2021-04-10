@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-6">
+    <div class="col-7">
       <nav class="navbar navbar-expand-xl">
         <div class="nav-item my-right-border col-xl-3">
           <router-link

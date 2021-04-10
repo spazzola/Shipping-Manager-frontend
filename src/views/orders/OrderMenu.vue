@@ -1,34 +1,37 @@
 <template>
   <div class="row">
-    <div class="col-xl-1 col-lg-2 bg">
-      <router-link to="/addOrder">
-        <i class="fas fa-times rotate"></i>Dodaj zamówienie
+
+    <div class="col-xl-1 col-lg-2 bg" style="margin-top: -0.5rem;"
+      v-if="isAddMode">
+      <router-link to="/orders">
+        <i class="fas fa-arrow-left"></i>Wstecz
       </router-link>
     </div>
-
-    <div class="col-xl-1 col-lg-2 bg" v-if="isAddMode">
-      <router-link to="/companies">
-        <i class="fas fa-arrow-left"></i>Wstecz
+    
+    <div v-else class="row" style="width: 100%; margin-top: 0;">
+      <div class="col-xl-2 col-lg-2 bg" style="margin-left: -2rem;">
+      <router-link to="/addOrder">
+        <i class="fas fa-times rotate"></i>Dodaj zamówienie
       </router-link>
     </div>
 
     <div class="col-xl-2 col-lg-2 bg">
       <base-toggle
         @changeStatus="changeToMyOrAllOrders"
-        leftSide="Wszystkie zlecenia"
-        rightSide="Moje zlecenia"
+        leftSide="Wszystkie"
+        rightSide="Moje"
       ></base-toggle>
     </div>
 
     <div class="col-xl-2 col-lg-2 bg">
       <base-toggle
         @changeStatus="changeToGivenOrReceivedOrders"
-        leftSide="Wydane zlenia"
-        rightSide="Otrzymane zlecenia"
+        leftSide="Nadane"
+        rightSide="Otrzymane"
       ></base-toggle>
     </div>
 
-    <div class="col-xl-3 col-lg-3 bg select-by" style="text-align: center">
+    <div class="col-xl-4 col-lg-3 bg select-by" style="text-align: center">
       <p>Wyszukaj po:</p>
       <select class="form-select" @change="changeSelectBy($event)">
         <option value="none" selected>Wybierz</option>
@@ -43,7 +46,7 @@
       />
     </div>
 
-    <div class="col-xl-2 col-lg-2 bg">
+    <div class="col-xl-2" style="text-align: left;">
       <select
         class="form-select"
         id="month"
@@ -64,6 +67,7 @@
         <option value="12">Grudzień</option>
       </select>
       <select
+        style="margin-left: 0.5rem;"
         class="form-select"
         id="year"
         v-model="status.date.year"
@@ -83,6 +87,7 @@
         <option value="2030">2030</option>
       </select>
     </div>
+    </div>
   </div>
 </template>
 
@@ -93,6 +98,7 @@ export default {
   components: {
     BaseToggle,
   },
+  props: ["isAddMode"],
   data() {
     return {
       status: {

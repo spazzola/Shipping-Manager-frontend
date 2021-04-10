@@ -47,7 +47,8 @@ export default {
 
 <style scoped>
 .btn-group {
-  width: 20rem;
+  width: 10rem;
+  font-size: 1rem;
 }
 
 .btn-warning:not(:disabled):not(.disabled).active {

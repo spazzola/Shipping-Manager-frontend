@@ -1,6 +1,7 @@
 <template>
   <nav-menu></nav-menu>
-  <div class="content" v-if="!isEditMode">
+  <order-menu :isAddMode="true"></order-menu>
+  <div class="content" v-if="!isEditMode" style="margin-top: -2rem;">
     <div class="row row-top-margin">
       <div class="col-2 offset-5 col-title">
         <h4>Informacje o zamówieniu</h4>
@@ -131,7 +132,7 @@
     </div>
   </div>
 
-  <router-view v-else>
+  <router-view v-else style="margin-top: -2rem;">
       <order-edit
       :id="id"
       :selectedOrder="selectedOrder"
@@ -142,11 +143,13 @@
 
 <script>
 import NavMenu from "../nav/NavMenu.vue";
+import OrderMenu from './OrderMenu.vue';
 import OrderEdit from './OrderEdit.vue';
 
 export default {
   components: {
     NavMenu,
+    OrderMenu,
     OrderEdit
   },
   props: ["id"],
