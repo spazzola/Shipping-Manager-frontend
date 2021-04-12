@@ -12,6 +12,7 @@ import DriversList from '../views/drivers/DriversList.vue'
 import DriverAdd from '../views/drivers/DriverAdd.vue'
 import DriverEdit from '../views/drivers/DriverEdit.vue'
 import DriverDetail from '../views/drivers/DriverDetail.vue'
+import InvoiceList from '../views/invoices/InvoiceList.vue'
 
 const routes = [
   {
@@ -75,6 +76,10 @@ const routes = [
   {
     path: '/addOrder',
     component: OrderAdd
+  },
+  {
+    path: '/invoices',
+    component: InvoiceList
   }
 ]
 
