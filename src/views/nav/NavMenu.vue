@@ -12,7 +12,7 @@
           >
         </div>
         <div class="nav-item my-right-border col-xl-3">
-          <router-link class="nav-link" active-class="active" to=""
+          <router-link class="nav-link" active-class="active" to="/invoices"
             ><i class="fas fa-file-invoice-dollar"></i>Faktury</router-link
           >
         </div>
