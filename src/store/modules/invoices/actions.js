@@ -29,6 +29,7 @@ export default {
                 amountToPay: responseData[key].amountToPay,
                 issuedBy: responseData[key].issuedBy,
                 receivedBy: responseData[key].receivedBy,
+                products: responseData[key].products,
                 paid: responseData[key].paid
             };
 
@@ -59,7 +60,7 @@ export default {
             id: data
         })
 
-        const response = await fetch(url, {
+        await fetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt"),
@@ -85,7 +86,7 @@ export default {
                     return;
                 }
 
-                var data = window.URL.createObjectURL(newBlob);
+                data = window.URL.createObjectURL(newBlob);
 
                 var link = document.createElement('a');
                 document.body.appendChild(link);
