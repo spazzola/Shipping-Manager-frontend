@@ -234,7 +234,6 @@ export default {
       this.order.orderType = event.target.value;
     },
     submitForm() {
-      this.order.createdDate += " 00:00";
       this.formatOrderDates();
       this.$emit("order-data", this.order);
     },
@@ -242,7 +241,7 @@ export default {
       this.order.createdDate = this.formatDate(this.order.createdDate);
     },
     formatDate(value) {
-      return moment(String(value)).format("DD/MM/YYYY HH:MM");
+      return moment(String(value)).format("DD/MM/YYYY HH:mm");
     },
   },
 };
