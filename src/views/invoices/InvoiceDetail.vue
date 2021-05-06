@@ -1,78 +1,85 @@
 <template>
   <nav-menu></nav-menu>
   <invoice-menu></invoice-menu>
-  <div class="content" v-if="!isEditMode" style="margin-top: -2rem">
+  <div class="content" v-if="!editMode" style="margin-top: -2rem">
     <div class="row row-top-margin">
       <div class="col-2 offset-4 col-title">Numer faktury:</div>
-      <div class="col-2 col-content">{{ selectedInvoice.invoiceNumber }}</div>
+      <div class="col-2 col-content">{{ currentInvoice.invoiceNumber }}</div>
     </div>
 
     <div class="row row-top-margin">
       <div class="col-2 offset-4 col-title">Nadano w:</div>
-      <div class="col-2 col-content">{{ selectedInvoice.issuedIn }}</div>
+      <div class="col-2 col-content">{{ currentInvoice.issuedIn }}</div>
     </div>
 
     <div class="row row-top-margin">
       <div class="col-2 offset-4 col-title">Data wystawienia:</div>
-      <div class="col-2 col-content">{{ selectedInvoice.issuedDate }}</div>
+      <div class="col-2 col-content">{{ currentInvoice.issuedDate }}</div>
     </div>
 
     <div class="row row-top-margin">
       <div class="col-2 offset-4 col-title">Wystawiona dla:</div>
       <div class="col-2 col-content">
-        {{ selectedInvoice.receivedBy.companyName }}
+        {{ currentInvoice.receivedBy.companyName }}
       </div>
     </div>
 
     <div class="row row-top-margin">
       <div class="col-2 offset-6 col-content">
-        NIP: {{ selectedInvoice.receivedBy.nip }}
+        NIP: {{ currentInvoice.receivedBy.nip }}
       </div>
     </div>
 
     <div class="row row-top-margin">
       <div class="col-2 offset-4 col-title">Metoda płatności:</div>
-      <div class="col-2 col-content">{{ selectedInvoice.paymentMethod }}</div>
+      <div class="col-2 col-content">{{ currentInvoice.paymentMethod }}</div>
     </div>
 
-    <div class=" row-top-margin">
+    <div class="row-top-margin">
       <div class="col-2 offset-4 col-title">Sprzedane usługi:</div>
       <product-info 
-      :products="selectedInvoice.products"
-      :currency="selectedInvoice.currency"></product-info>
+      :products="currentInvoice.products"
+      :currency="currentInvoice.currency"></product-info>
     </div>
 
     <div class="row row-top-margin">
       <div class="col-2 offset-4 col-title">Wartość netto:</div>
-      <div class="col-2 col-content">{{ selectedInvoice.valueWithoutTax }}</div>
+      <div class="col-2 col-content">{{ currentInvoice.valueWithoutTax }}</div>
     </div>
 
     <div class="row row-top-margin">
       <div class="col-2 offset-4 col-title">Wartość brutto:</div>
-      <div class="col-2 col-content">{{ selectedInvoice.valueWithTax }}</div>
+      <div class="col-2 col-content">{{ currentInvoice.valueWithTax }}</div>
     </div>
 
     <div class="row row-top-margin">
       <div class="col-2 offset-4 col-title">Waluta:</div>
-      <div class="col-2 col-content">{{ selectedInvoice.currency }}</div>
+      <div class="col-2 col-content">{{ currentInvoice.currency }}</div>
     </div>
 
     <div class="row row-top-margin">
       <div class="col-2 offset-4 col-title">Zapłacona kwota:</div>
-      <div class="col-2 col-content">{{ selectedInvoice.paidAmount }}</div>
+      <div class="col-2 col-content">{{ currentInvoice.paidAmount }}</div>
     </div>
 
     <div class="row row-top-margin">
       <div class="col-2 offset-4 col-title">Zostało do zapłaty:</div>
-      <div class="col-2 col-content">{{ selectedInvoice.amountToPay }}</div>
+      <div class="col-2 col-content">{{ currentInvoice.amountToPay }}</div>
     </div>
 
     <div class="row row-top-margin">
       <div class="col-2 offset-4 col-title">Zapłacona:</div>
       <div class="col-2 col-content">{{ isPaid }}</div>
     </div>
+  </div>
 
-    <div class="row row-top-margin row-bottom-margin">
+  <router-view v-else style="margin-top: -2rem">
+    <invoice-edit 
+    :selectedInvoice="selectedInvoice"
+    @clicked="switchMode"> </invoice-edit>
+  </router-view>
+
+  <div class="row row-top-margin row-bottom-margin">
       <div class="col-2 offset-5">
         <router-link :to="editInvoice" v-if="!editMode"
           ><button class="btn btn-sm btn-outline-success" @click="switchMode">
@@ -81,18 +88,13 @@
         >
       </div>
     </div>
-  </div>
-
-  <router-view v-else style="margin-top: -2rem">
-    <invoice-edit :selectedInvoice="selectedInvoice"> </invoice-edit>
-  </router-view>
 </template>
 
 <script>
 import NavMenu from "../nav/NavMenu.vue";
 import InvoiceMenu from "./InvoiceMenu.vue";
 import InvoiceEdit from "./InvoiceEdit.vue";
-import ProductInfo from "./ProductInfo.vue"
+import ProductInfo from "./product/ProductInfo.vue"
 
 export default {
   components: {
@@ -109,8 +111,15 @@ export default {
     };
   },
   computed: {
+    currentInvoice() {
+      if (this.$store.getters["invoices/getInvoice"] === null) {
+        return this.selectedInvoice;
+      } else {
+        return this.$store.getters["invoices/getInvoice"];
+      }
+    },
     isPaid() {
-      if (this.selectedInvoice.paid === true) {
+      if (this.currentInvoice.paid === true) {
         return "Tak";
       } else {
         return "Nie";
@@ -126,13 +135,12 @@ export default {
   methods: {
     switchMode() {
       this.editMode = !this.editMode;
-    },
+    }
   },
   created() {
     this.selectedInvoice = this.$store.getters["invoices/getAllInvoices"].find(
       (invoice) => invoice.id === parseInt(this.id)
     );
-    console.log(this.selectedInvoice);
   },
 };
 </script>

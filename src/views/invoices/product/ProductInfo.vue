@@ -9,7 +9,7 @@
       {{ product.quantity }}
     </div>
     <div class="col-2 offset-5 col-title">
-      <p>Jednostka:</p>
+      <p>Jednostka miary:</p>
       {{ product.measureUnit }}
     </div>
     <div class="col-2 offset-5 col-title">
@@ -18,7 +18,7 @@
     </div>
     <div class="col-2 offset-5 col-title">
       <p>Wartość podatku:</p>
-      {{ product.taxValue * 100 }}%
+      {{ product.taxValue }}%
     </div>
     <div class="col-2 offset-5 col-title">
       <p>Wartość netto:</p>

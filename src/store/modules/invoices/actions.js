@@ -38,6 +38,25 @@ export default {
 
         context.commit('setInvoices', invoices);
     },
+    async loadInvoice(context, data) {
+        let url = new URL('http://localhost:8080/invoice/getInvoice');
+        url.search = new URLSearchParams({
+            id: data
+        })
+
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': "Bearer " + localStorage.getItem("jwt")
+            }
+        });
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            // error
+        }
+        context.commit('setInvoice', responseData);
+    },
     async createInvoiceToOrder(context, data) {
         const response = await fetch('http://localhost:8080/invoice/createInvoiceToOrder', {
             method: 'POST',
@@ -130,5 +149,22 @@ export default {
         if (!response.ok) {
             // error
         }   
+    },
+    async updateInvoice(context, data) {
+        const response = await fetch('http://localhost:8080/invoice/update', {
+            method: 'PUT',
+            headers: {
+                'Authorization': "Bearer " + localStorage.getItem("jwt"),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            // error 
+        }
+    },
+    async setInvoice(context, data) {
+        context.commit('setInvoice', data);
     }
 }
