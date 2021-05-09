@@ -1,6 +1,6 @@
 <template>
   <nav-menu></nav-menu>
-  <invoice-menu></invoice-menu>
+  <invoice-menu :isAddMode="true"></invoice-menu>
   <div class="content" v-if="!editMode" style="margin-top: -2rem">
     <div class="row row-top-margin">
       <div class="col-2 offset-4 col-title">Numer faktury:</div>
