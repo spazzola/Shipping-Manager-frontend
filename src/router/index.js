@@ -15,6 +15,7 @@ import DriverDetail from '../views/drivers/DriverDetail.vue'
 import InvoiceList from '../views/invoices/InvoiceList.vue'
 import InvoiceDetail from '../views/invoices/InvoiceDetail.vue'
 import InvoiceEdit from '../views/invoices/InvoiceEdit.vue'
+import InvoiceAdd from '../views/invoices/InvoiceAdd.vue'
 
 const routes = [
   {
@@ -93,6 +94,10 @@ const routes = [
         component: InvoiceEdit
       }
     ]
+  },
+  {
+    path: '/addInvoice',
+    component: InvoiceAdd
   }
 ]
 
