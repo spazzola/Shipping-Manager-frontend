@@ -1,6 +1,10 @@
 <template>
   <nav-menu></nav-menu>
-  <invoice-menu></invoice-menu>
+  <invoice-menu
+    :isAddMode="false"
+    @sortByProperty="changeInvoices"
+    @sortByDate="changeInvoices"
+  ></invoice-menu>
   <div class="content">
     <table>
       <thead>
@@ -17,7 +21,7 @@
       </thead>
     </table>
 
-    <div>
+    <div v-if="!showBackButton">
       <invoice-item
         v-for="invoice in invoices"
         :key="invoice.id"
@@ -41,16 +45,67 @@ export default {
   components: {
     NavMenu,
     InvoiceMenu,
-    InvoiceItem
+    InvoiceItem,
+  },
+  data() {
+    return {
+      showBackButton: false,
+      status: {
+        selectBy: {
+          by: "none",
+          value: null,
+        },
+        date: {
+          day: 1,
+          month: null,
+          year: null,
+        },
+      },
+    };
   },
   computed: {
-      invoices() {
-          return this.$store.getters["invoices/getAllInvoices"];
+    invoices() {
+      let resultInvoices = this.$store.getters["invoices/getAllInvoices"];
+      if (this.status.selectBy.by === "companyName") {
+        let companyName = this.status.selectBy.value;
+        resultInvoices = resultInvoices.filter((invoice) =>
+          invoice.receivedBy.companyName.includes(companyName)
+        );
       }
+      if (this.status.selectBy.by === "nip") {
+        let nip = this.status.selectBy.value;
+        resultInvoices = resultInvoices.filter((invoice) =>
+          invoice.receivedBy.nip.includes(nip)
+        );
+      }
+
+      if (this.status.date.month !== null) {
+        let currentDate = this.buildDate();
+        resultInvoices = resultInvoices.filter((invoice) =>
+          invoice.issuedDate.includes(currentDate)
+        );
+      }
+
+      return resultInvoices;
+    },
+  },
+  methods: {
+    changeInvoices(status) {
+      this.status.selectBy = status.selectBy;
+      this.status.date = status.date;
+    },
+    buildDate() {
+      let currentMonth = this.status.date.month;
+      if (currentMonth.length === 1) {
+        currentMonth = "0" + currentMonth;
+      }
+      let currentYear = this.status.date.year;
+      return "/" + currentMonth + "/" + currentYear + " " + "00:00";
+    },
   },
   created() {
-      this.$store.dispatch("invoices/loadInvoices");
-  }
+    this.$store.dispatch("invoices/loadInvoices");
+  },
 };
 </script>
 
