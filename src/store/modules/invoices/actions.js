@@ -57,6 +57,22 @@ export default {
         }
         context.commit('setInvoice', responseData);
     },
+    async addInvoice(context, data) {
+        const response = await fetch('http://localhost:8080/invoice/createInvoice', {
+            method: 'POST',
+            headers: {
+                'Authorization': "Bearer " + localStorage.getItem("jwt"),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            // error 
+        }
+
+        context.commit('addInvoice', data);
+    },
     async createInvoiceToOrder(context, data) {
         const response = await fetch('http://localhost:8080/invoice/createInvoiceToOrder', {
             method: 'POST',
