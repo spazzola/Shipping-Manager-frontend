@@ -68,7 +68,7 @@ export default {
         });
 
         if (!response.ok) {
-            // error 
+            alert("Nie dodano faktury") 
         }
 
         context.commit('addInvoice', data);

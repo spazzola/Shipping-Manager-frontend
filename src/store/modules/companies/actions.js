@@ -63,7 +63,7 @@ export default {
         });
 
         if (!response.ok) {
-            // error 
+            alert("Nie dodano firmy")
         }
 
         context.commit('addCompany', data);

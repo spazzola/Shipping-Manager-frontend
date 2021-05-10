@@ -71,7 +71,7 @@ export default {
         });
 
         if (!response.ok) {
-            // error 
+            alert("Nie dodano zamówienia");
         }
 
         context.commit('addOrder', data);

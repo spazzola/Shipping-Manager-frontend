@@ -59,7 +59,7 @@ export default {
         });
 
         if (!response.ok) {
-            // error 
+            alert("Nie dodano kierowcy")
         }
 
         context.commit('addDriver', data);
