@@ -38,11 +38,13 @@ export default {
   },
   methods: {
     async deleteCompany() {
-      await this.$store.dispatch("companies/deleteCompany", this.id);
-      await this.$store.dispatch("companies/loadCompanies");
-      this.$router.replace("/companies");
-    }
-  }
+      if (confirm("Czy napewno chcesz usunąć firmę?")) {
+        await this.$store.dispatch("companies/deleteCompany", this.id);
+        await this.$store.dispatch("companies/loadCompanies");
+        this.$router.replace("/companies");
+      }
+    },
+  },
 };
 </script>
 

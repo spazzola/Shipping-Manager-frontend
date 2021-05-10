@@ -67,8 +67,10 @@ export default {
   },
   methods: {
     async deleteInvoice() {
+      if(confirm("Czy napewno chcesz usunąć fakturę?")) {
         await this.$store.dispatch("invoices/deleteInvoice", this.id);
         await this.$store.dispatch("invoices/loadInvoices", this.id);
+      }
     },
     createPdf() {
         this.$store.dispatch("invoices/createPdf", this.id);

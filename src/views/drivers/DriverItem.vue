@@ -19,18 +19,13 @@
           </td>
           <td scope="row">{{ fullName }}</td>
           <td scope="row">
-            <p
-              v-for="plate in plates"
-              :key="plate.id"
-            >
+            <p v-for="plate in plates" :key="plate.id">
               {{ plate.plateNumber }}
             </p>
           </td>
           <td scope="row">
-            <p v-for="phoneNumber in phoneNumbers"
-            :key="phoneNumber.id"
-            >
-            {{ phoneNumber.type }}: {{ phoneNumber.number}}
+            <p v-for="phoneNumber in phoneNumbers" :key="phoneNumber.id">
+              {{ phoneNumber.type }}: {{ phoneNumber.number }}
             </p>
           </td>
         </tr>
@@ -47,16 +42,18 @@ export default {
       return this.name + " " + this.surname;
     },
     driverEditLink() {
-      return '/driver/' + this.id;
-    }
+      return "/driver/" + this.id;
+    },
   },
-   methods: {
+  methods: {
     async deleteDriver() {
-      await this.$store.dispatch("drivers/deleteDriver", this.id);
-      await this.$store.dispatch("drivers/loadDrivers");
-      this.$router.replace("/drivers");
-    }
-  }
+      if (confirm("Czy napewno chcesz usunąć kierowcę?")) {
+        await this.$store.dispatch("drivers/deleteDriver", this.id);
+        await this.$store.dispatch("drivers/loadDrivers");
+        this.$router.replace("/drivers");
+      }
+    },
+  },
 };
 </script>
 

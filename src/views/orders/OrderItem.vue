@@ -4,7 +4,10 @@
       <tbody>
         <tr>
           <td scope="row">
-            <button class="btn btn-sm btn-remove btn-right-margin" @click="deleteOrder">
+            <button
+              class="btn btn-sm btn-remove btn-right-margin"
+              @click="deleteOrder"
+            >
               <i class="fas fa-times"></i>
             </button>
 
@@ -16,15 +19,16 @@
                 Szczegóły
               </button>
             </router-link>
-            <button 
-            class="btn btn-sm btn-outline-success btn-font btn-right-margin"
-            @click="createInvoice"
-            v-if="!isInvoiceCreated">
+            <button
+              class="btn btn-sm btn-outline-success btn-font btn-right-margin"
+              @click="createInvoice"
+              v-if="!isInvoiceCreated"
+            >
               Wystaw FV
             </button>
-            <button 
-            class="btn btn-sm btn-outline-success btn-font"
-            @click="createPdf"
+            <button
+              class="btn btn-sm btn-outline-success btn-font"
+              @click="createPdf"
             >
               Generuj PDF
             </button>
@@ -45,7 +49,16 @@
 
 <script>
 export default {
-  props: ["id", "orderNumber", "createdDate", "shipper", "givenBy", "receivedBy", "loadingInformation", "isInvoiceCreated"],
+  props: [
+    "id",
+    "orderNumber",
+    "createdDate",
+    "shipper",
+    "givenBy",
+    "receivedBy",
+    "loadingInformation",
+    "isInvoiceCreated",
+  ],
   computed: {
     orderDetailsLink() {
       return "/order/" + this.id;
@@ -65,18 +78,20 @@ export default {
     },
     unloadingInfo() {
       return this.loadingInformation.unloadingPlace;
-    }
+    },
   },
   methods: {
     async deleteOrder() {
-      await this.$store.dispatch("orders/deleteOrder", this.id);
-      await this.$store.dispatch("orders/loadOrders");
-      this.$router.replace("/orders");
+      if (confirm("Czy napewno chcesz usunąć zamówienie?")) {
+        await this.$store.dispatch("orders/deleteOrder", this.id);
+        await this.$store.dispatch("orders/loadOrders");
+        this.$router.replace("/orders");
+      }
     },
     async createInvoice() {
-      let selectedOrder = this.$store.getters[
-      "orders/getAllOrders"].find(
-      (order) => order.id === parseInt(this.id));
+      let selectedOrder = this.$store.getters["orders/getAllOrders"].find(
+        (order) => order.id === parseInt(this.id)
+      );
 
       let createInvoiceRequest = {
         orderId: selectedOrder.id,
@@ -86,16 +101,19 @@ export default {
         issuedIn: selectedOrder.issuedIn,
         paid: false,
         productName: "Usługa transportowa",
-        paymentMethod: "Przelew"
+        paymentMethod: "Przelew",
       };
 
-      await this.$store.dispatch("invoices/createInvoiceToOrder", createInvoiceRequest);
+      await this.$store.dispatch(
+        "invoices/createInvoiceToOrder",
+        createInvoiceRequest
+      );
       await this.$store.dispatch("orders/loadOrders");
     },
     createPdf() {
       this.$store.dispatch("orders/createPdf", this.id);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -131,8 +149,9 @@ th {
   overflow: hidden;
 }
 
-table, td {
-    padding-left: 0 !important;
+table,
+td {
+  padding-left: 0 !important;
   padding-right: 0 !important;
 }
 
