@@ -151,7 +151,8 @@ export default {
   },
   computed: {
     companies() {
-      return this.$store.getters["companies/getAllCompanies"];
+      let companiesList = this.$store.getters["companies/getAllCompanies"];
+      return this.removeMainCompany(companiesList);
     },
     width() {
       return "width: " + this.progressWidth + "%;";
@@ -164,6 +165,14 @@ export default {
     },
   },
   methods: {
+    removeMainCompany(companiesList) {
+      for (var i = 0; i < companiesList.length; i++) {
+        if (companiesList[i].mainCompany === true) {
+          companiesList.splice(i, 1);
+        }
+      }
+      return companiesList;
+    },
     orderData(order) {
       this.updateProgressBarAfterOrderForm();
       this.order.createdDate = order.createdDate;

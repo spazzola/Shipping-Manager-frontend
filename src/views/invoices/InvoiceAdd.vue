@@ -138,10 +138,19 @@ export default {
   },
   computed: {
     companies() {
-      return this.$store.getters["companies/getAllCompanies"];
+      let companiesList = this.$store.getters["companies/getAllCompanies"];
+      return this.removeMainCompany(companiesList);
     },
   },
   methods: {
+    removeMainCompany(companiesList) {
+      for (var i = 0; i < companiesList.length; i++) {
+        if (companiesList[i].mainCompany === true) {
+          companiesList.splice(i, 1);
+        }
+      }
+      return companiesList;
+    },
     selectPaymentMethod(event) {
       this.invoice.paymentMethod = event.target.value;
     },
@@ -166,11 +175,11 @@ export default {
       this.goBack();
     },
     formatInvoiceDate() {
-        this.invoice.issuedDate = this.formatDate(this.invoice.issuedDate);
+      this.invoice.issuedDate = this.formatDate(this.invoice.issuedDate);
     },
     formatDate(value) {
       return moment(String(value)).format("DD/MM/YYYY HH:mm");
-    }
+    },
   },
   created() {
     this.$store.dispatch("companies/loadCompanies");

@@ -13,7 +13,6 @@ export default {
         }
 
         const companies = [];
-
         for (const key in responseData) {
             const company = {
                 id: responseData[key].id,
@@ -23,7 +22,8 @@ export default {
                 email: responseData[key].email,
                 address: responseData[key].address,
                 phoneNumbers: responseData[key].phoneNumbers,
-                bankAccounts: responseData[key].bankAccounts
+                bankAccounts: responseData[key].bankAccounts,
+                mainCompany: responseData[key].mainCompany
             };
             companies.push(company);
         }
