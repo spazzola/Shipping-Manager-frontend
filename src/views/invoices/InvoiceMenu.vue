@@ -6,7 +6,7 @@
       </router-link>
     </div>
 
-    <div v-else class="row" style="width: 100%">
+    <div v-else class="row" style="width: 100%; margin-top: 0;">
       <div class="col-xl-2 col-lg-2 bg" style="margin-left: -2rem">
         <router-link to="/addInvoice">
           <i class="fas fa-times rotate"></i>Dodaj fakturę

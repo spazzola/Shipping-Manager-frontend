@@ -58,11 +58,6 @@ export default {
         this.$router.replace("/users");
       }
     },
-    async checkFlag() {
-      if (this.showAlert === true) {
-        window.setTimeout(this.checkFlag, 100)
-      }
-    },
     confirmAlert() {
       this.isConfirmed = true;
       this.showAlert = false;
