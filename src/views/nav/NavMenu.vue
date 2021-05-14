@@ -30,7 +30,7 @@
           <router-link
             class="nav-link"
             active-class="active"
-            to=""
+            to="/users"
             ><i class="fas fa-user-cog"></i>Panel administratora</router-link
           >
         </div>

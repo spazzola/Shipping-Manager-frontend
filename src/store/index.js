@@ -7,7 +7,8 @@ import platesModule from './modules/plates/index.js';
 import bankAccountsModule from './modules/bankAccounts/index.js';
 import ordersModule from './modules/orders/index.js';
 import invoicesModule from './modules/invoices/index.js';
-import productsModule from './modules/products/index.js'
+import productsModule from './modules/products/index.js';
+import adminModule from './modules/admin/index';
 
 let timer;
 
@@ -20,7 +21,8 @@ export default createStore({
     bankAccounts: bankAccountsModule,
     orders: ordersModule,
     invoices: invoicesModule,
-    products: productsModule
+    products: productsModule,
+    admin: adminModule
   },
   state: {
     jwt: null,

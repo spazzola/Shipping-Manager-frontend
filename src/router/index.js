@@ -16,6 +16,9 @@ import InvoiceList from '../views/invoices/InvoiceList.vue'
 import InvoiceDetail from '../views/invoices/InvoiceDetail.vue'
 import InvoiceEdit from '../views/invoices/InvoiceEdit.vue'
 import InvoiceAdd from '../views/invoices/InvoiceAdd.vue'
+import UsersList from '../views/admin/UsersList.vue'
+import UserDetail from '../views/admin/UserDetail.vue'
+import UserAdd from '../views/admin/UserAdd.vue'
 
 const routes = [
   {
@@ -98,6 +101,19 @@ const routes = [
   {
     path: '/addInvoice',
     component: InvoiceAdd
+  },
+  {
+    path: '/users',
+    component: UsersList
+  },
+  {
+    path: '/user/:id',
+    component: UserDetail,
+    props: true
+  },
+  {
+    path: '/addUser',
+    component: UserAdd
   }
 ]
 
