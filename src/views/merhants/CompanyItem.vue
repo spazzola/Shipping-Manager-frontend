@@ -1,4 +1,21 @@
 <template>
+  <base-alert v-if="showAlert" title="Potwierdź czynność">
+    <template #default>
+      <p>Czy napewno chcesz usunąć firmę?</p>
+    </template>
+    <template #actions>
+      <base-button
+        @click="confirmAlert"
+        :buttonType="'confirm'"
+        :buttonText="'Tak'"
+      ></base-button>
+      <base-button
+        @click="rejectAlert"
+        :buttonType="'reject'"
+        :buttonText="'Nie'"
+      ></base-button>
+    </template>
+  </base-alert>
   <div>
     <table class="table table-striped">
       <tbody>
@@ -31,6 +48,12 @@
 <script>
 export default {
   props: ["id", "companyName", "nip", "regon", "email"],
+  data() {
+    return {
+      showAlert: false,
+      isConfirmed: false,
+    };
+  },
   computed: {
     companyDetailsLink() {
       return "/company/" + this.id;
@@ -38,12 +61,22 @@ export default {
   },
   methods: {
     async deleteCompany() {
-      if (confirm("Czy napewno chcesz usunąć firmę?")) {
+      this.showAlert = true;
+      if (this.isConfirmed) {
         await this.$store.dispatch("companies/deleteCompany", this.id);
         await this.$store.dispatch("companies/loadCompanies");
         this.$router.replace("/companies");
       }
     },
+    confirmAlert() {
+      this.isConfirmed = true;
+      this.showAlert = false;
+      this.deleteCompany();
+    },
+    rejectAlert() {
+      this.isConfirmed = false;
+      this.showAlert = false;
+    }
   },
 };
 </script>

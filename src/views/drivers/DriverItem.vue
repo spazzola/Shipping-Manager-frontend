@@ -1,4 +1,13 @@
 <template>
+ <base-alert v-if="showAlert" title="Potwierdź czynność">
+    <template #default>
+      <p>Czy napewno chcesz usunąć kierowcę?</p>
+    </template>
+    <template #actions>
+      <base-button @click="confirmAlert" :buttonType="'confirm'" :buttonText="'Tak'"></base-button>
+      <base-button @click="rejectAlert" :buttonType="'reject'" :buttonText="'Nie'"></base-button>
+    </template>
+  </base-alert>
   <div>
     <table class="table table-striped">
       <tbody>
@@ -37,6 +46,12 @@
 <script>
 export default {
   props: ["id", "name", "surname", "plates", "phoneNumbers"],
+  data() {
+    return {
+      showAlert: false,
+      isConfirmed: false
+    }
+  },
   computed: {
     fullName() {
       return this.name + " " + this.surname;
@@ -47,12 +62,22 @@ export default {
   },
   methods: {
     async deleteDriver() {
-      if (confirm("Czy napewno chcesz usunąć kierowcę?")) {
+      this.showAlert = true;
+      if (this.isConfirmed) {
         await this.$store.dispatch("drivers/deleteDriver", this.id);
         await this.$store.dispatch("drivers/loadDrivers");
         this.$router.replace("/drivers");
       }
     },
+    confirmAlert() {
+      this.isConfirmed = true;
+      this.showAlert = false;
+      this.deleteDriver();
+    },
+    rejectAlert() {
+      this.isConfirmed = false;
+      this.showAlert = false;
+    }
   },
 };
 </script>

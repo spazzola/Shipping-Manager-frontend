@@ -1,4 +1,21 @@
 <template>
+  <base-alert v-if="showAlert" title="Potwierdź czynność">
+    <template #default>
+      <p>Czy napewno chcesz usunąć fakturę?</p>
+    </template>
+    <template #actions>
+      <base-button
+        @click="confirmAlert"
+        :buttonType="'confirm'"
+        :buttonText="'Tak'"
+      ></base-button>
+      <base-button
+        @click="rejectAlert"
+        :buttonType="'reject'"
+        :buttonText="'Nie'"
+      ></base-button>
+    </template>
+  </base-alert>
   <div>
     <table class="table table-striped">
       <tbody>
@@ -8,7 +25,8 @@
               <i class="fas fa-times"></i>
             </button>
 
-            <button v-if="!paid"
+            <button
+              v-if="!paid"
               class="btn btn-sm btn-outline-success btn-font"
               style="float: right"
               @click="payForInvoice"
@@ -36,7 +54,9 @@
           <td scope="row">{{ issuedDate }}</td>
           <td scope="row">{{ valueWithoutTax }}</td>
           <td scope="row">{{ valueWithTax }}</td>
-          <td scope="row" :style="paid ? 'color: green' : 'color: red'">{{ isPaid }}</td>
+          <td scope="row" :style="paid ? 'color: green' : 'color: red'">
+            {{ isPaid }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -53,32 +73,48 @@ export default {
     "valueWithTax",
     "paid",
   ],
+  data() {
+    return {
+      showAlert: false,
+      isConfirmed: false,
+    };
+  },
   computed: {
     invoiceDetailsLink() {
       return "/invoice/" + this.id;
     },
     isPaid() {
-        if (this.paid === true) {
-            return "Tak";
-        } else {
-            return "Nie";
-        }
-    }
+      if (this.paid === true) {
+        return "Tak";
+      } else {
+        return "Nie";
+      }
+    },
   },
   methods: {
-    async deleteInvoice() {
-      if(confirm("Czy napewno chcesz usunąć fakturę?")) {
+    async deleteInvoice() { 
+      this.showAlert = true;
+      if (this.isConfirmed) {
         await this.$store.dispatch("invoices/deleteInvoice", this.id);
         await this.$store.dispatch("invoices/loadInvoices", this.id);
       }
     },
     createPdf() {
-        this.$store.dispatch("invoices/createPdf", this.id);
+      this.$store.dispatch("invoices/createPdf", this.id);
     },
     async payForInvoice() {
-        await this.$store.dispatch("invoices/payForInvoice", this.id);
-        await this.$store.dispatch("invoices/loadInvoices");
-    }
+      await this.$store.dispatch("invoices/payForInvoice", this.id);
+      await this.$store.dispatch("invoices/loadInvoices");
+    },
+    confirmAlert() {
+      this.isConfirmed = true;
+      this.showAlert = false;
+      this.deleteInvoice();
+    },
+    rejectAlert() {
+      this.isConfirmed = false;
+      this.showAlert = false;
+    },
   },
 };
 </script>

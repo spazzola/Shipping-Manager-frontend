@@ -1,4 +1,21 @@
 <template>
+  <base-alert v-if="showAlert" title="Potwierdź czynność">
+    <template #default>
+      <p>Czy napewno chcesz usunąć zamówienie?</p>
+    </template>
+    <template #actions>
+      <base-button
+        @click="confirmAlert"
+        :buttonType="'confirm'"
+        :buttonText="'Tak'"
+      ></base-button>
+      <base-button
+        @click="rejectAlert"
+        :buttonType="'reject'"
+        :buttonText="'Nie'"
+      ></base-button>
+    </template>
+  </base-alert>
   <div>
     <table class="table table-striped">
       <tbody>
@@ -59,6 +76,12 @@ export default {
     "loadingInformation",
     "isInvoiceCreated",
   ],
+  data() {
+    return {
+      showAlert: false,
+      isConfirmed: false
+    };
+  },
   computed: {
     orderDetailsLink() {
       return "/order/" + this.id;
@@ -82,7 +105,8 @@ export default {
   },
   methods: {
     async deleteOrder() {
-      if (confirm("Czy napewno chcesz usunąć zamówienie?")) {
+      this.showAlert = true;
+      if (this.isConfirmed) {
         await this.$store.dispatch("orders/deleteOrder", this.id);
         await this.$store.dispatch("orders/loadOrders");
         this.$router.replace("/orders");
@@ -113,6 +137,15 @@ export default {
     createPdf() {
       this.$store.dispatch("orders/createPdf", this.id);
     },
+    confirmAlert() {
+      this.isConfirmed = true;
+      this.showAlert = false;
+      this.deleteOrder();
+    },
+    rejectAlert() {
+      this.isConfirmed = false;
+      this.showAlert = false;
+    }
   },
 };
 </script>

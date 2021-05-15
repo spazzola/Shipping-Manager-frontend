@@ -1,7 +1,7 @@
 <template>
   <base-alert v-if="showAlert" title="Potwierdź czynność">
     <template #default>
-      <p>Czy napewno chcesz usunać użytkownika?</p>
+      <p>Czy napewno chcesz usunąć użytkownika?</p>
     </template>
     <template #actions>
       <base-button @click="confirmAlert" :buttonType="'confirm'" :buttonText="'Tak'"></base-button>
