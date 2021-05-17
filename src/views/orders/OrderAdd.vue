@@ -13,9 +13,8 @@
       {{ currentProgress }}
     </div>
   </div>
-  <div>
+  <div v-show="showOrderForm">
     <order-form
-      v-show="showOrderForm"
       @order-data="orderData"
       :buttonText="'Dalej'"
     ></order-form>
@@ -46,7 +45,7 @@
       <div class="row additional-margin">
         <div class="col-2 offset-4 col-title">Odbiorca zlecenia</div>
         <div class="col-2 col-content">
-          <select v-model="selectedCompany.company" class="form-select">
+          <select v-model="selectedCompany.company" @change="changeSelectCompanyType($event)" class="form-select">
             <option value="NONE" selected>Wybierz ręcznie</option>
             <option
               v-bind:value="{
@@ -87,6 +86,7 @@
       @company-data="companyData"
       :buttonText="'Dalej'"
       :showBackButton="true"
+      :disableInputs="selectCompanyType !== 'NONE'"
       @go-back="goBack"
     ></company-form>
     </div>
@@ -121,6 +121,7 @@ export default {
   },
   data() {
     return {
+      selectCompanyType: "NONE",
       selectedCompany: {
         company: {
           id: null,
@@ -168,6 +169,9 @@ export default {
     },
   },
   methods: {
+    changeSelectCompanyType(event) {
+      this.selectCompanyType = event.target.value;
+    },
     removeMainCompany(companiesList) {
       for (var i = 0; i < companiesList.length; i++) {
         if (companiesList[i].mainCompany === true) {
@@ -274,7 +278,6 @@ export default {
   },
   created() {
     this.$store.dispatch("companies/loadCompanies");
-    console.log(this.showDriverForm);
   },
 };
 </script>

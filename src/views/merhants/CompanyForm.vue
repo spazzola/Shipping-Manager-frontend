@@ -20,6 +20,7 @@
               class="form-control header"
               v-model.trim="company.companyName"
               placeholder="Nazwa firmy"
+              :disabled="disableInputs"
             />
           </div>
         </div>
@@ -31,6 +32,7 @@
             class="form-control form-control-sm"
             v-model.trim="company.nip"
             placeholder="NIP"
+            :disabled="disableInputs"
           />
         </div>
       </div>
@@ -41,6 +43,7 @@
             class="form-control form-control-sm"
             v-model.trim="company.regon"
             placeholder="REGON"
+            :disabled="disableInputs"
           />
         </div>
       </div>
@@ -51,6 +54,7 @@
             class="form-control form-control-sm"
             v-model.trim="company.email"
             placeholder="Email"
+            :disabled="disableInputs"
           />
         </div>
       </div>
@@ -61,21 +65,25 @@
             class="form-control form-control-sm"
             v-model.trim="company.address.street"
             placeholder="Nazwa ulicy"
+            :disabled="disableInputs"
           />
           <input
             class="form-control form-control-sm"
             v-model.trim="company.address.houseNumber"
             placeholder="Numer budynku"
+            :disabled="disableInputs"
           />
           <input
             class="form-control form-control-sm"
             v-model.trim="company.address.postalCode"
             placeholder="Kod pocztowy"
+            :disabled="disableInputs"
           />
           <input
             class="form-control form-control-sm"
             v-model.trim="company.address.city"
             placeholder="Miasto"
+            :disabled="disableInputs"
           />
         </div>
       </div>
@@ -88,12 +96,14 @@
               placeholder="Rodzaj"
               v-model.trim="company.phoneNumbers[index - 1].type"
               :key="index"
+              :disabled="disableInputs"
             />
             <input
               class="form-control form-control-sm"
               placeholder="Numer telefonu"
               v-model.trim="company.phoneNumbers[index - 1].number"
               :key="index"
+              :disabled="disableInputs"
             />
             <button
               class="btn btn-sm btn-remove remove"
@@ -125,11 +135,13 @@
               class="form-control form-control-sm"
               placeholder="Nazwa"
               v-model.trim="company.bankAccounts[index - 1].accountName"
+              :disabled="disableInputs"
             />
             <input
               class="form-control form-control-sm"
               placeholder="Numer konta"
               v-model.trim="company.bankAccounts[index - 1].accountNumber"
+              :disabled="disableInputs"
             />
             <button
               class="btn btn-sm btn-remove remove"
@@ -173,7 +185,7 @@
 
 <script>
 export default {
-  props: ["buttonText", "showBackButton"],
+  props: ["buttonText", "showBackButton", "disableInputs"],
   emits: ["go-back", "company-data"],
   data() {
     return {
@@ -220,7 +232,7 @@ export default {
       this.bankAccountsToAdd += 1;
     },
     submitForm() {
-      if (this.validateForm()) {
+      if (this.validateForm() || this.disableInputs) {
         this.$emit("company-data", this.company);
       } else {
         this.showAlert = true;
