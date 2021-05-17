@@ -1,4 +1,16 @@
 <template>
+  <base-alert v-if="showAlert" title="Błąd">
+    <template #default>
+      <p>Sprawdź czy wszystkie pola zostały uzupełnione</p>
+    </template>
+    <template #actions>
+      <base-button
+        @click="confirmAlert"
+        :buttonType="'confirm'"
+        :buttonText="'Ok'"
+      ></base-button>
+    </template>
+  </base-alert>
   <div class="content form-group">
     <form>
       <div class="row row-top-margin">
@@ -191,6 +203,7 @@ export default {
   props: ["buttonText"],
   data() {
     return {
+      showAlert: false,
       selectedCompany: {
         company: {
           id: null,
@@ -234,14 +247,57 @@ export default {
       this.order.orderType = event.target.value;
     },
     submitForm() {
-      this.formatOrderDates();
-      this.$emit("order-data", this.order);
+      if (this.validateForm()) {
+        this.formatOrderDates();
+        this.$emit("order-data", this.order);
+      } else {
+        this.showAlert = true;
+      }
+    },
+    validateForm() {
+      if (this.order.description === null || this.order.description === '') {
+        return false;
+      }
+      if (this.order.issuedIn === null || this.order.issuedIn === '') {
+        return false;
+      }
+      if (this.order.createdDate === null || this.order.createdDate === '') {
+        return false;
+      }
+      if (this.order.value === null || this.order.value === 0) {
+        return false;
+      }
+      if (this.order.weight === null || this.order.weight === 0) {
+        return false;
+      }
+      if (this.order.loadingInformation.loadingPlace === null || this.order.loadingInformation.loadingPlace === '') {
+        return false;
+      }
+      if (this.order.loadingInformation.minLoadingDate === null || this.order.loadingInformation.minLoadingDate === '') {
+        return false;
+      }
+      if (this.order.loadingInformation.maxLoadingDate === null || this.order.loadingInformation.maxLoadingDate === '') {
+        return false;
+      }
+      if (this.order.loadingInformation.unloadingPlace === null || this.order.loadingInformation.unloadingPlace === null) {
+        return false;
+      }
+      if (this.order.loadingInformation.minUnloadingDate === null || this.order.loadingInformation.minUnloadingDate === '') {
+        return false;
+      }
+      if (this.order.loadingInformation.maxUnloadingDate === null || this.order.loadingInformation.maxUnloadingDate === '') {
+        return false;
+      }
+      return true;
     },
     formatOrderDates() {
       this.order.createdDate = this.formatDate(this.order.createdDate);
     },
     formatDate(value) {
       return moment(String(value)).format("DD/MM/YYYY HH:mm");
+    },
+    confirmAlert() {
+      this.showAlert = false;
     },
   },
 };
