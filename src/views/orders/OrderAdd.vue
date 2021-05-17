@@ -1,7 +1,7 @@
 <template>
   <nav-menu></nav-menu>
   <order-menu :isAddMode="true"></order-menu>
-  <div class="progress" style="margin-top: -2.15rem;">
+  <div class="progress" style="margin-top: -2.15rem">
     <div
       class="progress-bar bg-success"
       role="progressbar"
@@ -82,28 +82,31 @@
         </div>
       </div>
     </div>
-    <company-form
+    <div>
+      <company-form
       @company-data="companyData"
       :buttonText="'Dalej'"
       :showBackButton="true"
       @go-back="goBack"
     ></company-form>
+    </div>
   </div>
 
-  <driver-form
-    v-for="index in driversToAdd"
-    :key="index"
-    v-show="showDriverForm"
-    :buttonText="'Dodaj zlecenie'"
-    :showBackButton="true"
-    @driver-data="driverData"
-    @go-back="goBack"
-  ></driver-form>
+  <div v-show="showDriverForm">
+    <driver-form
+      v-for="index in driversToAdd"
+      :key="index"
+      :buttonText="'Dodaj zlecenie'"
+      :showBackButton="true"
+      @driver-data="driverData"
+      @go-back="goBack"
+    ></driver-form>
+  </div>
 </template>
 
 <script>
 import NavMenu from "../nav/NavMenu.vue";
-import OrderMenu from './OrderMenu.vue';
+import OrderMenu from "./OrderMenu.vue";
 import OrderForm from "./OrderForm.vue";
 import DriverForm from "../drivers/DriverForm.vue";
 import CompanyForm from "../merhants/CompanyForm.vue";
@@ -145,7 +148,7 @@ export default {
         givenById: null,
         drivers: [],
         loadingInformation: {},
-        shipper: null
+        shipper: null,
       },
     };
   },
@@ -271,6 +274,7 @@ export default {
   },
   created() {
     this.$store.dispatch("companies/loadCompanies");
+    console.log(this.showDriverForm);
   },
 };
 </script>
