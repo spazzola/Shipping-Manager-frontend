@@ -1,4 +1,16 @@
 <template>
+  <base-alert v-if="showAlert" title="Błąd">
+    <template #default>
+      <p>Sprawdź czy wszystkie pola zostały uzupełnione</p>
+    </template>
+    <template #actions>
+      <base-button
+        @click="confirmAlert"
+        :buttonType="'confirm'"
+        :buttonText="'Ok'"
+      ></base-button>
+    </template>
+  </base-alert>
   <div class="content form-group">
     <form>
       <h2>
@@ -162,8 +174,10 @@
 <script>
 export default {
   props: ["buttonText", "showBackButton"],
+  emits: ["go-back", "company-data"],
   data() {
     return {
+      showAlert: false,
       phoneNumbersToAdd: 1,
       bankAccountsToAdd: 1,
       company: {
@@ -206,7 +220,70 @@ export default {
       this.bankAccountsToAdd += 1;
     },
     submitForm() {
-      this.$emit("company-data", this.company);
+      if (this.validateForm()) {
+        this.$emit("company-data", this.company);
+      } else {
+        this.showAlert = true;
+      }
+    },
+    validateForm() {
+      if (this.company.companyName === null || this.company.companyName === '') {
+        return false;
+      }
+      if (this.company.nip === null || this.company.nip === '') {
+        return false;
+      }
+      if (this.company.regon === null || this.company.regon === '') {
+        return false;
+      }
+      if (this.company.email === null || this.company.email === '') {
+        return false;
+      }
+      if (this.company.address.street === null || this.company.address.street === '') {
+        return false;
+      }
+      if (this.company.address.houseNumber === null || this.company.address.houseNumber === '') {
+        return false;
+      }
+      if (this.company.address.postalCode === null || this.company.address.postalCode === '') {
+        return false;
+      }
+      if (this.company.address.city === null || this.company.address.city === '') {
+        return false;
+      }
+      if (!this.validatePhoneNumbers()) {
+        return false;
+      }
+      if (!this.validateBankAccounts()) {
+        return false;
+      }
+      return true;
+    },
+    validatePhoneNumbers() {
+      let phoneNumbers = this.company.phoneNumbers;
+      for (let i = 0; i < phoneNumbers.length; i++) {
+        let phoneNumber = phoneNumbers[i];
+        if (phoneNumber.type === null || phoneNumber.type === '') {
+          return false;
+        }
+        if (phoneNumber.number === null || phoneNumber.number === '') {
+          return false;
+        }
+        return true;
+      }
+    },
+    validateBankAccounts() {
+      let bankAccounts = this.company.bankAccounts;
+      for (let i = 0; i < bankAccounts.length; i++) {
+        let bankAccount = bankAccounts[i];
+        if (bankAccount.accountName === null || bankAccount.accountName === '') {
+          return false;
+        }
+        if (bankAccount.accountNumber === null || bankAccount.accountNumber === '') {
+          return false;
+        }
+        return true;
+      }
     },
     removePhoneField() {
       if (this.phoneNumbersToAdd > 1) {
@@ -218,10 +295,13 @@ export default {
         this.bankAccountsToAdd -= 1;
       }
     },
+    confirmAlert() {
+      this.showAlert = false;
+    },
     goBack() {
       this.$emit("go-back");
     },
-  }
+  },
 };
 </script>
 

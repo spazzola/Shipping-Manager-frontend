@@ -17,9 +17,13 @@ export default {
   },
 
   methods: {
-    async submitForm(driver) {
+    async submitForm(drivers) {
+      let driver = this.extractDriver(drivers)
       await this.$store.dispatch("drivers/addDriver", driver);
       this.$router.replace("/drivers");
+    },
+    extractDriver(drivers) {
+      return drivers[0]
     }
   }
 };

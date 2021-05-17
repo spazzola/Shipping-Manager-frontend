@@ -1,4 +1,16 @@
 <template>
+  <base-alert v-if="showAlert" title="Błąd">
+    <template #default>
+      <p>Sprawdź czy wszystkie pola zostały uzupełnione</p>
+    </template>
+    <template #actions>
+      <base-button
+        @click="confirmAlert"
+        :buttonType="'confirm'"
+        :buttonText="'Ok'"
+      ></base-button>
+    </template>
+  </base-alert>
   <div class="form-group">
     <form>
       <div class="row">
@@ -98,13 +110,14 @@ export default {
   emits: ["user-data"],
   data() {
     return {
+      showAlert: false,
       user: {
         login: null,
         password: null,
         name: null,
         surname: null,
         email: null,
-        role: "USER"
+        role: "USER",
       },
       passwordCheck: null,
     };
@@ -114,19 +127,41 @@ export default {
       this.$router.replace("/users");
     },
     submitForm() {
-      if (this.passwordsMatch()) {
+      if (this.validateForm()) {
         this.$emit("user-data", this.user);
       } else {
-        alert("Podane hasła nie pasują do siebie");
+        this.showAlert = true;
       }
     },
     passwordsMatch() {
-      if (this.user.password === this.passwordCheck && this.user.password !== null && this.user.password !== '') {
+      if (
+        this.user.password === this.passwordCheck &&
+        this.user.password !== null &&
+        this.user.password !== ""
+      ) {
         return true;
       } else {
         return false;
       }
     },
+    validateForm() {
+      if (!this.passwordsMatch) {
+        return false;
+      }
+      if (this.user.login === null || this.user.login === '') {
+        return false;
+      }
+      if (this.user.name === null || this.user.name === '') {
+        return false;
+      }
+      if (this.user.email === null || this.user.email === '') {
+        return false;
+      }
+    },
+    confirmAlert() {
+      this.isConfirmed = true;
+      this.showAlert = false;
+    }
   },
 };
 </script>

@@ -1,4 +1,16 @@
 <template>
+  <base-alert v-if="showAlert" title="Błąd">
+    <template #default>
+      <p>Sprawdź czy wszystkie pola zostały uzupełnione</p>
+    </template>
+    <template #actions>
+      <base-button
+        @click="confirmAlert"
+        :buttonType="'confirm'"
+        :buttonText="'Ok'"
+      ></base-button>
+    </template>
+  </base-alert>
   <nav-menu></nav-menu>
   <invoice-menu :isAddMode="true"></invoice-menu>
   <div class="content form-group">
@@ -123,6 +135,7 @@ export default {
   },
   data() {
     return {
+      showAlert: false,
       currencies: ["PLN", "EUR", "CZK", "USD", "GBP"],
       invoice: {
         issuedIn: null,
@@ -170,15 +183,72 @@ export default {
       this.$router.replace("/invoices");
     },
     async submitForm() {
-      this.formatInvoiceDate();
-      await this.$store.dispatch("invoices/addInvoice", this.invoice);
-      this.goBack();
+      console.log(this.invoice)
+      if (this.validateForm()) {
+        this.formatInvoiceDate();
+        await this.$store.dispatch("invoices/addInvoice", this.invoice);
+        this.goBack();
+      } else {
+        this.showAlert = true;
+      }
+    },
+    validateForm() {
+      if (this.invoice.issuedIn === null || this.invoice.issuedIn === "") {
+        return false;
+      }
+      if (this.invoice.issuedDate === null || this.invoice.issuedDate === "") {
+        return false;
+      }
+      if (
+        this.invoice.daysTillPayment === null ||
+        this.invoice.daysTillPayment === ""
+      ) {
+        return false;
+      }
+      if (this.invoice.currency === null || this.invoice.currency === "") {
+        return false;
+      }
+      if (this.invoice.paidAmount === null || this.invoice.paidAmount === "") {
+        return false;
+      }
+      if (this.invoice.receivedBy === null) {
+        return false;
+      }
+      if (!this.validateProducts()) {
+        return false;
+      }
+      return true;
+    },
+    validateProducts() {
+      let products = this.invoice.products;
+      for (let i = 0; i < products.length; i++) {
+        let product = products[i];
+        if (product.productName === null || product.productName === "") {
+          return false;
+        }
+        if (product.measureUnit === null || product.measureUnit === "") {
+          return false;
+        }
+        if (product.priceWithoutTax === null || product.priceWithoutTax === 0) {
+          return false;
+        }
+        if (product.quantity === null || product.quantity === 0) {
+          return false;
+        }
+        if (product.taxValue === null || product.taxValue === 0) {
+          return false;
+        }
+        return true;
+      }
     },
     formatInvoiceDate() {
       this.invoice.issuedDate = this.formatDate(this.invoice.issuedDate);
     },
     formatDate(value) {
       return moment(String(value)).format("DD/MM/YYYY HH:mm");
+    },
+    confirmAlert() {
+      this.showAlert = false;
     },
   },
   created() {

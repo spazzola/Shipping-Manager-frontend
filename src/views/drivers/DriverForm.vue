@@ -1,4 +1,16 @@
 <template>
+  <base-alert v-if="showAlert" title="Błąd">
+    <template #default>
+      <p>Sprawdź czy wszystkie pola zostały uzupełnione</p>
+    </template>
+    <template #actions>
+      <base-button
+        @click="confirmAlert"
+        :buttonType="'confirm'"
+        :buttonText="'Ok'"
+      ></base-button>
+    </template>
+  </base-alert>
   <div class="content form-group">
     <form>
       <div class="row row-top-margin">
@@ -223,14 +235,16 @@
 <script>
 export default {
   props: ["buttonText", "showBackButton"],
+  emits: ["driver-data", "go-back"],
   data() {
     return {
+      showAlert: false,
       firstDriverPhoneNumbersToAdd: 1,
       firstDriverPlatesToAdd: 1,
       secondDriverPhoneNumbersToAdd: 1,
       secondDriverPlatesToAdd: 1,
       showNextDriverForm: false,
-      drivers: []
+      drivers: [],
     };
   },
   computed: {
@@ -261,7 +275,7 @@ export default {
     },
     addNewPlateForFirstDriver() {
       this.drivers[0].plates.push({
-        plateNumber: ""
+        plateNumber: "",
       });
       this.firstDriverPlatesToAdd += 1;
     },
@@ -276,7 +290,7 @@ export default {
     },
     addNewPlateForSecondDriver() {
       this.drivers[1].plates.push({
-        plateNumber: ""
+        plateNumber: "",
       });
       this.secondDriverPlatesToAdd += 1;
     },
@@ -286,7 +300,11 @@ export default {
       }
     },
     async submitForm() {
-      this.$emit("driver-data", this.drivers);
+      if (this.validateForm()) {
+        this.$emit("driver-data", this.drivers);
+      } else {
+        this.showAlert = true;
+      }
     },
     addNextDriver() {
       if (this.showNextDriverForm === false) {
@@ -310,6 +328,38 @@ export default {
         this.showNextDriverForm = false;
         this.drivers.pop();
       }
+    },
+    validateForm() {
+      for (let i = 0; i < this.drivers.length; i++) {
+        let driver = this.drivers[i];
+
+        if (driver.name === null || driver.name === '') {
+          return false;
+        }
+        if (driver.surname === null || driver.surname === '') {
+          return false;
+        }
+        if (!this.validatePhoneNumbers(driver)) {
+          return false;
+        }
+        return true;
+      }
+    },
+    validatePhoneNumbers(driver) {
+      let phoneNumbers = driver.phoneNumbers;
+      for (let i = 0; i < phoneNumbers.length; i++) {
+        let phoneNumber = phoneNumbers[i];
+        if (phoneNumber.type === null || phoneNumber.type === '') {
+          return false;
+        }
+        if (phoneNumber.number === null || phoneNumber.number === '') {
+          return false;
+        }
+        return true;
+      }
+    },
+    confirmAlert() {
+      this.showAlert = false;
     },
     goBack() {
       this.$emit("go-back");
