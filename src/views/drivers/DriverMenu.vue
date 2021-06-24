@@ -2,12 +2,12 @@
   <div class="row">
     <div class="col-xl-1 col-lg-2 bg" v-if="!isAddMode">
       <router-link to="/addDriver">
-        <i class="fas fa-times rotate"></i>Dodaj kierowce
+        <i class="fas fa-times rotate" style="color: green; margin-right: 5%;"></i>Dodaj kierowce
       </router-link>
     </div>
     <div class="col-xl-1 col-lg-2 bg" v-else>
       <router-link to="/drivers">
-        <i class="fas fa-arrow-left"></i>Wstecz
+        <i class="fas fa-arrow-left" style="color: green; margin-right: 5%;"></i>Wstecz
       </router-link>
     </div>
   </div>

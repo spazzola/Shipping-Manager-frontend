@@ -8,22 +8,22 @@
             active-class="active"
             to="/orders"
           >
-            <i class="fas fa-file-invoice"></i>Zamówienia</router-link
+            <i class="fas fa-file-invoice" style="margin-right: 10%;"></i>Zamówienia</router-link
           >
         </div>
         <div class="nav-item my-right-border col-xl-3">
           <router-link class="nav-link" active-class="active" to="/invoices"
-            ><i class="fas fa-file-invoice-dollar"></i>Faktury</router-link
+            ><i class="fas fa-file-invoice-dollar" style="margin-right: 10%;"></i>Faktury</router-link
           >
         </div>
         <div class="nav-item my-right-border col-xl-3">
           <router-link class="nav-link" active-class="active" to="/companies"
-            ><i class="fas fa-users"></i>Kontrahenci</router-link
+            ><i class="fas fa-users" style="margin-right: 10%;"></i>Kontrahenci</router-link
           >
         </div>
         <div class="nav-item col-xl-3">
           <router-link class="nav-link" active-class="active" to="/drivers"
-            ><i class="fas fa-truck-moving"></i>Kierowcy</router-link
+            ><i class="fas fa-truck-moving" style="margin-right: 10%;"></i>Kierowcy</router-link
           >
         </div>
         <div class="nav-item my-left-border col-xl-4" v-if="isAdmin">
@@ -31,7 +31,7 @@
             class="nav-link"
             active-class="active"
             to="/users"
-            ><i class="fas fa-user-cog"></i>Panel administratora</router-link
+            ><i class="fas fa-user-cog" style="margin-right: 10%;"></i>Panel administratora</router-link
           >
         </div>
       </nav>

@@ -4,14 +4,14 @@
     <div class="col-xl-1 col-lg-2 bg" style="margin-top: -0.5rem;"
       v-if="isAddMode">
       <router-link to="/orders">
-        <i class="fas fa-arrow-left"></i>Wstecz
+        <i class="fas fa-arrow-left"  style="color: green; margin-right: 5%;"></i>Wstecz
       </router-link>
     </div>
     
     <div v-else class="row" style="width: 100%; margin-top: 0;">
       <div class="col-xl-2 col-lg-2 bg" style="margin-left: -2rem;">
       <router-link to="/addOrder">
-        <i class="fas fa-times rotate"></i>Dodaj zamówienie
+        <i class="fas fa-times rotate" style="color: green; margin-right: 5%;"></i>Dodaj zamówienie
       </router-link>
     </div>
 

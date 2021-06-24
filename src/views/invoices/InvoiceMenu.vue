@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-xl-1 col-lg-2 bg" v-if="isAddMode">
       <router-link to="/invoices">
-        <i class="fas fa-arrow-left"></i>Wstecz
+        <i class="fas fa-arrow-left" style="color: green; margin-right: 5%;"></i>Wstecz
       </router-link>
     </div>
 
     <div v-else class="row" style="width: 100%; margin-top: 0;">
       <div class="col-xl-2 col-lg-2 bg" style="margin-left: -2rem">
         <router-link to="/addInvoice">
-          <i class="fas fa-times rotate"></i>Dodaj fakturę
+          <i class="fas fa-times rotate" style="color: green; margin-right: 5%;"></i>Dodaj fakturę
         </router-link>
       </div>
 
