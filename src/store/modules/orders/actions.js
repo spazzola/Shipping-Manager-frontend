@@ -1,6 +1,8 @@
+import { baseURL } from '../../../base-url.js';
+
 export default {
     async loadOrders(context) {
-        const response = await fetch('http://localhost:8080/order/getAll', {
+        const response = await fetch(baseURL + '/order/getAll', {
             method: 'GET',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt")
@@ -39,7 +41,7 @@ export default {
         context.commit('setOrders', orders);
     },
     async loadOrder(context, data) {
-        let url = new URL('http://localhost:8080/order/getOrder');
+        let url = new URL(baseURL + '/order/getOrder');
         url.search = new URLSearchParams({
             id: data
         })
@@ -61,7 +63,7 @@ export default {
         context.commit('unloadOrder');
     },
     async addOrder(context, data) {
-        const response = await fetch('http://localhost:8080/order/createOrder', {
+        const response = await fetch(baseURL + '/order/createOrder', {
             method: 'POST',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt"),
@@ -77,7 +79,7 @@ export default {
         context.commit('addOrder', data);
     },
     async deleteOrder(context, data) {
-        let url = new URL('http://localhost:8080/order/delete');
+        let url = new URL(baseURL + '/order/delete');
         url.search = new URLSearchParams({
             id: data
         })
@@ -94,7 +96,7 @@ export default {
         }   
     },
     async updateOrder(context, data) {
-        const response = await fetch('http://localhost:8080/order/update', {
+        const response = await fetch(baseURL + '/order/update', {
             method: 'PUT',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt"),
@@ -113,7 +115,7 @@ export default {
         context.commit('setOrder', data);
     },
     async createPdf(context, data) {
-        let url = new URL('http://localhost:8080/order/createPdf');
+        let url = new URL(baseURL + '/order/createPdf');
         url.search = new URLSearchParams({
             id: data
         })

@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import { baseURL } from '../base-url.js';
 
 import companiesModule from './modules/companies/index.js';
 import driversModule from './modules/drivers/index.js';
@@ -53,17 +54,16 @@ export default createStore({
     },
     async auth(context, payload) {
       const mode = payload.mode;
-      let url =
-      'http://localhost:8080/user/authenticate';
+      let url = baseURL + '/user/authenticate';
 
       if (mode === 'signup') {
-        url =
-          'http://localhost:8080/user/register';
+        url = baseURL + '/user/register';
       }
 
       const response = await fetch(url, {
         method: 'POST',
         headers: {
+          'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({

@@ -1,6 +1,8 @@
+import { baseURL } from '../../../base-url.js';
+
 export default {
     async deletePhoneNumbers(context, data) {
-        const response = await fetch('http://localhost:8080/phoneNumber/deletePhoneNumbers', {
+        const response = await fetch(baseURL + '/phoneNumber/deletePhoneNumbers', {
             method: 'DELETE',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt"),

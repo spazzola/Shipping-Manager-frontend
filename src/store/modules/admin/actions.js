@@ -1,6 +1,8 @@
+import { baseURL } from '../../../base-url.js';
+
 export default {
     async loadUsers(context) {
-        const response = await fetch('http://localhost:8080/user/getAll', {
+        const response = await fetch(baseURL + '/user/getAll', {
             method: 'GET',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt")
@@ -27,7 +29,7 @@ export default {
         context.commit('setUsers', users);
     },
     async loadUser(context, data) {
-        let url = new URL('http://localhost:8080/user/getUser');
+        let url = new URL(baseURL + '/user/getUser');
         url.search = new URLSearchParams({
             id: data
         })
@@ -46,7 +48,7 @@ export default {
         context.commit('setUser', responseData);
     },
     async addUser(context, data) {
-        const response = await fetch('http://localhost:8080/user/register', {
+        const response = await fetch(baseURL + '/user/register', {
             method: 'POST',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt"),
@@ -62,7 +64,7 @@ export default {
         context.commit('addUser', data);
     },
     async deleteUser(context, data) {
-        let url = new URL('http://localhost:8080/user/deleteUser');
+        let url = new URL(baseURL + '/user/deleteUser');
         url.search = new URLSearchParams({
             id: data
         })

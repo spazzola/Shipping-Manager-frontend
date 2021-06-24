@@ -1,6 +1,8 @@
+import { baseURL } from '../../../base-url.js';
+
 export default {
     async loadCompanies(context) {
-        const response = await fetch('http://localhost:8080/company/getAll', {
+        const response = await fetch(baseURL + '/company/getAll', {
             method: 'GET',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt")
@@ -31,7 +33,7 @@ export default {
         context.commit('setCompanies', companies);
     },
     async loadCompany(context, data) {
-        let url = new URL('http://localhost:8080/company/getCompany');
+        let url = new URL(baseURL + '/company/getCompany');
         url.search = new URLSearchParams({
             id: data
         })
@@ -53,7 +55,7 @@ export default {
         context.commit('unloadCompany');
     },
     async addCompany(context, data) {
-        const response = await fetch('http://localhost:8080/company/create', {
+        const response = await fetch(baseURL + '/company/create', {
             method: 'POST',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt"),
@@ -69,7 +71,7 @@ export default {
         context.commit('addCompany', data);
     },
     async updateCompany(context, data) {
-        const response = await fetch('http://localhost:8080/company/update', {
+        const response = await fetch(baseURL + '/company/update', {
             method: 'PUT',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt"),
@@ -85,7 +87,7 @@ export default {
         context.commit('updateCompany', data);
     },
     async deleteCompany(context, data) {
-        let url = new URL('http://localhost:8080/company/deleteCompany');
+        let url = new URL(baseURL + '/company/deleteCompany');
         url.search = new URLSearchParams({
             id: data
         })

@@ -1,6 +1,8 @@
+import { baseURL } from '../../../base-url.js';
+
 export default {
     async loadDrivers(context) {
-        const response = await fetch('http://localhost:8080/driver/getAll', {
+        const response = await fetch(baseURL + '/driver/getAll', {
             method: 'GET',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt")
@@ -27,7 +29,7 @@ export default {
         context.commit('setDrivers', drivers);
     },
     async loadDriver(context, data) {
-        let url = new URL('http://localhost:8080/driver/getDriver');
+        let url = new URL(baseURL + '/driver/getDriver');
         url.search = new URLSearchParams({
             id: data
         })
@@ -49,7 +51,7 @@ export default {
         context.commit('unloadDriver');
     },
     async addDriver(context, data) {
-        const response = await fetch('http://localhost:8080/driver/create', {
+        const response = await fetch(baseURL + '/driver/create', {
             method: 'POST',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt"),
@@ -65,7 +67,7 @@ export default {
         context.commit('addDriver', data);
     },
     async deleteDriver(context, data) {
-        let url = new URL('http://localhost:8080/driver/deleteDriver');
+        let url = new URL(baseURL + '/driver/deleteDriver');
         url.search = new URLSearchParams({
             id: data
         })
@@ -82,7 +84,7 @@ export default {
         }   
     },
     async updateDriver(context, data) {
-        const response = await fetch('http://localhost:8080/driver/update', {
+        const response = await fetch(baseURL + '/driver/update', {
             method: 'PUT',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt"),

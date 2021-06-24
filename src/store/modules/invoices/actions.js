@@ -1,6 +1,8 @@
+import { baseURL } from '../../../base-url.js';
+
 export default {
     async loadInvoices(context) {
-        const response = await fetch('http://localhost:8080/invoice/getAll', {
+        const response = await fetch(baseURL + '/invoice/getAll', {
             method: 'GET',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt")
@@ -39,7 +41,7 @@ export default {
         context.commit('setInvoices', invoices);
     },
     async loadInvoice(context, data) {
-        let url = new URL('http://localhost:8080/invoice/getInvoice');
+        let url = new URL(baseURL + '/invoice/getInvoice');
         url.search = new URLSearchParams({
             id: data
         })
@@ -58,7 +60,7 @@ export default {
         context.commit('setInvoice', responseData);
     },
     async addInvoice(context, data) {
-        const response = await fetch('http://localhost:8080/invoice/createInvoice', {
+        const response = await fetch(baseURL + '/invoice/createInvoice', {
             method: 'POST',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt"),
@@ -74,7 +76,7 @@ export default {
         context.commit('addInvoice', data);
     },
     async createInvoiceToOrder(context, data) {
-        const response = await fetch('http://localhost:8080/invoice/createInvoiceToOrder', {
+        const response = await fetch(baseURL + '/invoice/createInvoiceToOrder', {
             method: 'POST',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt"),
@@ -90,7 +92,7 @@ export default {
         context.commit('addInvoice', data);
     },
     async createPdf(context, data) {
-        let url = new URL('http://localhost:8080/invoice/createPdf');
+        let url = new URL(baseURL + '/invoice/createPdf');
         url.search = new URLSearchParams({
             id: data
         })
@@ -133,7 +135,7 @@ export default {
             })
     },
     async payForInvoice(context, data) {
-        let url = new URL('http://localhost:8080/invoice/payForInvoice');
+        let url = new URL(baseURL + '/invoice/payForInvoice');
         url.search = new URLSearchParams({
             id: data
         })
@@ -150,7 +152,7 @@ export default {
         }   
     },
     async deleteInvoice(context, data) {
-        let url = new URL('http://localhost:8080/invoice/delete');
+        let url = new URL(baseURL + '/invoice/delete');
         url.search = new URLSearchParams({
             id: data
         })
@@ -167,7 +169,7 @@ export default {
         }   
     },
     async updateInvoice(context, data) {
-        const response = await fetch('http://localhost:8080/invoice/update', {
+        const response = await fetch(baseURL + '/invoice/update', {
             method: 'PUT',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt"),
