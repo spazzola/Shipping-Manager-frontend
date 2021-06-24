@@ -127,6 +127,7 @@ export default {
       this.$router.replace("/users");
     },
     submitForm() {
+      console.log(this.validateForm())
       if (this.validateForm()) {
         this.$emit("user-data", this.user);
       } else {
@@ -157,6 +158,7 @@ export default {
       if (this.user.email === null || this.user.email === '') {
         return false;
       }
+      return true;
     },
     confirmAlert() {
       this.isConfirmed = true;
