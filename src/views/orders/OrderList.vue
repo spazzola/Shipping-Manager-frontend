@@ -2,10 +2,10 @@
   <nav-menu></nav-menu>
   <order-menu
     :isAddMode="false"
-    @changeToMyOrAllOrders="changeOrders"
-    @changeToGivenOrReceivedOrders="changeOrders"
-    @sortByProperty="changeOrders"
-    @sortByDate="changeOrders"
+    @changeToMyOrAllOrders="changeStatusSelectBy"
+    @changeToGivenOrReceivedOrders="changeStatusSelectBy"
+    @sortByProperty="changeStatusSelectBy"
+    @sortByDate="changeStatusDateAndLoadOrders"
   ></order-menu>
   <div class="content">
     <table>
@@ -147,7 +147,7 @@ export default {
     },
   },
   methods: {
-    changeOrders(status) {
+    changeStatusSelectBy (status) {
       if (status.showAllOrders === true) {
         this.status.allOrders = true;
       } else {
@@ -160,7 +160,12 @@ export default {
         this.status.givenOrders = false;
       }
       this.status.selectBy = status.selectBy;
+    },
+    changeStatusDateAndLoadOrders(status) {
       this.status.date = status.date;
+      let month = this.status.date.month
+      let year = this.status.date.year;
+      this.$store.dispatch("orders/loadOrders", { month, year });
     },
     buildDate() {
       let currentMonth = this.status.date.month;
@@ -170,9 +175,32 @@ export default {
       let currentYear = this.status.date.year;
       return "/" + currentMonth + "/" + currentYear + " " + "00:00";
     },
+    getDate() {
+      let currentDateWithFormat = new Date()
+        .toJSON()
+        .slice(0, 10)
+        .replace(/-/g, "/");
+
+      return currentDateWithFormat;
+    },
+    getMonth() {
+      let currentDate = this.getDate();
+      let monthStr = currentDate.slice(5, 7);
+      if (monthStr.charAt(0) === "0") {
+        return monthStr.slice(1, 2);
+      } else {
+        return monthStr;
+      }
+    },
+    getYear() {
+      let currentDate = this.getDate();
+      return currentDate.slice(0, 4);
+    }
   },
   created() {
-    this.$store.dispatch("orders/loadOrders");
+    let month = this.getMonth();
+    let year = this.getYear();
+    this.$store.dispatch("orders/loadOrders", { month, year });
   },
 };
 </script>

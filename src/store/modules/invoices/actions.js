@@ -1,13 +1,26 @@
 import { baseURL } from '../../../base-url.js';
 
 export default {
-    async loadInvoices(context) {
-        const response = await fetch(baseURL + '/invoice/getAll', {
+    async loadInvoices(context, data) {
+        let url = new URL(baseURL + '/invoice/getMonthInvoices');
+        url.search = new URLSearchParams({
+            month: data.month,
+            year: data.year
+        })
+
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt")
-            },
+            }
         });
+
+        //const response = await fetch(baseURL + '/invoice/getAll', {
+          //  method: 'GET',
+            //headers: {
+              //  'Authorization': "Bearer " + localStorage.getItem("jwt")
+            //},
+        //});
         const responseData = await response.json();
 
         if (!response.ok) {
