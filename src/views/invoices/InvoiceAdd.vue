@@ -174,6 +174,7 @@ export default {
       var company = this.companies.find((company) => {
         return company.companyName === event.target.value;
       });
+      console.log(company);
       this.invoice.receivedBy = company;
     },
     appendNewProducts(products) {
@@ -194,27 +195,34 @@ export default {
     },
     validateForm() {
       if (this.invoice.issuedIn === null || this.invoice.issuedIn === "") {
+        console.log("a");
         return false;
       }
       if (this.invoice.issuedDate === null || this.invoice.issuedDate === "") {
+        console.log("b");
         return false;
       }
       if (
         this.invoice.daysTillPayment === null ||
         this.invoice.daysTillPayment === ""
       ) {
+        console.log("c");
         return false;
       }
       if (this.invoice.currency === null || this.invoice.currency === "") {
+        console.log("d");
         return false;
       }
       if (this.invoice.paidAmount === null || this.invoice.paidAmount === "") {
+        console.log("e");
         return false;
       }
       if (this.invoice.receivedBy === null) {
+        console.log("f");
         return false;
       }
       if (!this.validateProducts()) {
+        console.log("g");
         return false;
       }
       return true;
@@ -223,6 +231,7 @@ export default {
       let products = this.invoice.products;
       for (let i = 0; i < products.length; i++) {
         let product = products[i];
+        console.log(product);
         if (product.productName === null || product.productName === "") {
           return false;
         }
@@ -235,7 +244,7 @@ export default {
         if (product.quantity === null || product.quantity === 0) {
           return false;
         }
-        if (product.taxValue === null || product.taxValue === 0) {
+        if (product.tax === null || product.tax === 0) {
           return false;
         }
         return true;

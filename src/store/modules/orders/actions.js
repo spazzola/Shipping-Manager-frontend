@@ -1,8 +1,14 @@
 import { baseURL } from '../../../base-url.js';
 
 export default {
-    async loadOrders(context) {
-        const response = await fetch(baseURL + '/order/getAll', {
+    async loadOrders(context, data) {
+        let url = new URL(baseURL + '/order/getMonthOrders');
+        url.search = new URLSearchParams({
+            month: data.month,
+            year: data.year
+        })
+
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': "Bearer " + localStorage.getItem("jwt")
